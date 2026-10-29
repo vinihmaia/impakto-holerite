@@ -1,0 +1,35 @@
+# =========================================================
+# .gitignore — o que o Git NÃO deve guardar nem enviar
+# =========================================================
+
+# ---- Dados reais / sensíveis (LGPD: nunca enviar para a internet) ----
+*.pdf
+holerites/
+backup*.json
+*-backup.json
+dados*.json
+
+# ---- Segredos (chaves do Supabase, senhas etc. — para o futuro) ----
+.env
+.env.*
+!.env.exemplo
+
+# ---- Cópias antigas e imagens de trabalho ----
+*-antigo.*
+*_antigo.*
+
+# ---- Sistema operacional ----
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---- Editores ----
+.vscode/
+*.code-workspace
+.idea/
+
+# ---- Ferramentas futuras (Node.js, builds) ----
+node_modules/
+dist/
+build/
+*.log

@@ -1,0 +1,133 @@
+/* =========================================================
+   BASE: cores (tema claro e escuro), botões, formulários, tabelas, janelas
+   ========================================================= */
+
+/* ---- Cores da marca (iguais nos dois temas) ---- */
+:root{
+  --azul-escuro:#06104a; --azul:#0b2a8f; --azul-medio:#1d3fb8;
+  --amarelo:#f1e15b; --amarelo-escuro:#d9c43a;
+}
+
+/* ---- Tema CLARO (padrão). O holerite usa sempre estas cores, como papel ---- */
+:root, .holerite{
+  --fundo:#eef1f8; --superficie:#ffffff; --superficie-2:#f6f8fd; --superficie-3:#e7ebf7;
+  --texto:#1a2140; --texto-2:#3a4270; --texto-3:#5a6185; --texto-4:#7a809f;
+  --borda:#cfd5ea; --borda-2:#eef0f7; --borda-3:#d5dbef;
+  --titulo:#06104a;
+  --primario:#0b2a8f; --primario-hover:#1d3fb8;
+  --claro-bg:#e3e8f7; --claro-tx:#0b2a8f;
+  --aba-bg:#dfe4f3;
+  --verde:#1f8a4c; --verde-bg:#e5f5ec;
+  --vermelho:#c0392b; --vermelho-bg:#fbe4e1; --erro-bg:#fdecea;
+  --pend-tx:#8a6d00; --pend-bg:#fff4d6; --alerta-bg:#fff8dc;
+  --pdf-tx:#a5301f; --pdf-bg:#fde8e4;
+  --destaque-bg:#f3f6ff; --falta-bg:#fffdf0;
+  --sombra:0 2px 10px rgba(10,30,90,.06);
+}
+
+/* ---- Tema ESCURO ---- */
+[data-tema="escuro"]{
+  --fundo:#0a0f2e; --superficie:#131a3f; --superficie-2:#1a2250; --superficie-3:#222b60;
+  --texto:#e8ebf7; --texto-2:#c3c9e6; --texto-3:#a3aacb; --texto-4:#8a91b4;
+  --borda:#2f3872; --borda-2:#222a5a; --borda-3:#2f3872;
+  --titulo:#e8ebf7;
+  --primario:#3a5bdc; --primario-hover:#5272ea;
+  --claro-bg:#222b60; --claro-tx:#cdd6ff;
+  --aba-bg:#1a2250;
+  --verde:#5fd39a; --verde-bg:#123526;
+  --vermelho:#ff8f80; --vermelho-bg:#3b1d24; --erro-bg:#3b1d24;
+  --pend-tx:#f1d76b; --pend-bg:#3a3214; --alerta-bg:#2c2812;
+  --pdf-tx:#ff9f8f; --pdf-bg:#3b1d24;
+  --destaque-bg:#1a2250; --falta-bg:#2b2810;
+  --sombra:0 2px 14px rgba(0,0,0,.35);
+  color-scheme:dark;   /* deixa barras de rolagem e calendário escuros também */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;color:var(--texto);background:var(--fundo);transition:background .2s,color .2s}
+.oculto{display:none!important}
+
+/* ---- Formulários ---- */
+label{display:block;font-size:.8rem;font-weight:600;color:var(--texto-2);margin-bottom:6px}
+input,select{width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font:inherit;
+             font-size:.92rem;margin-bottom:16px;background:var(--superficie);color:var(--texto)}
+input:focus,select:focus{outline:none;border-color:var(--primario-hover);box-shadow:0 0 0 3px rgba(60,90,220,.25)}
+select:disabled{background:var(--superficie-2);color:var(--texto-4)}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:.85rem;line-height:1.5;margin-bottom:18px;cursor:pointer}
+.check input{width:auto;margin:4px 0 0;accent-color:var(--primario)}
+
+/* ---- Botões ---- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border:none;
+     border-radius:10px;font:inherit;font-weight:600;cursor:pointer;transition:.15s;text-decoration:none}
+.btn:focus-visible{outline:3px solid rgba(80,110,230,.45);outline-offset:2px}
+.btn-primario{background:var(--primario);color:#fff}
+.btn-primario:hover{background:var(--primario-hover)}
+.btn-amarelo{background:var(--amarelo);color:var(--azul-escuro)}
+.btn-amarelo:hover{background:var(--amarelo-escuro)}
+.btn-claro{background:var(--claro-bg);color:var(--claro-tx)}
+.btn-perigo{background:var(--vermelho-bg);color:var(--vermelho)}
+.btn-perigo-forte{background:#c0392b;color:#fff}
+.btn-perigo-forte:hover{background:#a5301f}
+.btn-contorno{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn-contorno:hover{border-color:var(--amarelo);color:var(--amarelo)}
+.btn-pequeno{padding:7px 12px;font-size:.8rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---- Mensagens e etiquetas ---- */
+.erro,.sucesso{padding:10px 12px;border-radius:8px;font-size:.85rem;margin-bottom:16px}
+.erro{background:var(--erro-bg);color:var(--vermelho)}
+.sucesso{background:var(--verde-bg);color:var(--verde)}
+.alerta{background:var(--alerta-bg);border-left:4px solid var(--amarelo-escuro);padding:12px 14px;margin-bottom:16px;font-size:.9rem}
+.sub{color:var(--texto-3);font-size:.9rem;margin:4px 0 22px}
+.dica-campo{color:var(--texto-4);font-size:.8rem}
+.vazio{color:var(--texto-4);text-align:center;padding:24px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600;
+     background:var(--claro-bg);color:var(--claro-tx);white-space:nowrap}
+.tag-rh{background:var(--amarelo);color:var(--azul-escuro)}
+.tag-ok{background:var(--verde-bg);color:var(--verde)}
+.tag-pend{background:var(--pend-bg);color:var(--pend-tx)}
+.tag-pdf{background:var(--pdf-bg);color:var(--pdf-tx)}
+
+/* ---- Tabelas ---- */
+.tabela-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:var(--superficie-3);text-align:left;padding:9px 12px;font-size:.72rem;text-transform:uppercase;color:var(--texto-2)}
+td{padding:9px 12px;border-bottom:1px solid var(--borda-2)}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tfoot td{font-weight:700;background:var(--superficie-2)}
+
+/* ---- Janelas (assinatura, senha, avisos) ---- */
+.modal-fundo{position:fixed;inset:0;background:rgba(6,16,74,.65);display:flex;align-items:center;
+             justify-content:center;padding:16px;z-index:50;animation:aparecer .15s ease-out}
+.modal{background:var(--superficie);color:var(--texto);border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:95vh;
+       overflow:auto;border-top:6px solid var(--amarelo);animation:subir .18s ease-out}
+.modal h2{color:var(--titulo);font-size:1.2rem}
+@keyframes aparecer{from{opacity:0}to{opacity:1}}
+@keyframes subir{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.modal-fundo,.modal{animation:none}}
+/* o quadro de assinatura fica sempre claro, como papel */
+#assin-canvas{width:100%;height:160px;border:2px dashed #b9c2e0;border-radius:10px;background:#fbfcff;
+              touch-action:none;cursor:crosshair;display:block;margin-bottom:8px}
+#modal-dialogo{z-index:60}
+.modal.dialogo{max-width:440px}
+.dlg-topo{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.dlg-topo h2{margin:0;line-height:1.3}
+.dlg-icone{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+           font-weight:800;font-size:1.15rem}
+.dlg-info{background:var(--claro-bg);color:var(--claro-tx)}
+.dlg-aviso{background:var(--pend-bg);color:var(--pend-tx)}
+.dlg-perigo{background:var(--vermelho-bg);color:var(--vermelho)}
+.dlg-sucesso{background:var(--verde-bg);color:var(--verde)}
+.dlg-msg{white-space:pre-line;color:var(--texto-2);font-size:.92rem;line-height:1.6;margin-bottom:18px}
+.dlg-codigo{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--superficie-2);
+            border:1.5px dashed var(--borda);border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.dlg-codigo span{font:600 1.6rem 'IBM Plex Mono',monospace;letter-spacing:.08em;color:var(--titulo);user-select:all}
+
+/* ---- Impressão / PDF ---- */
+@media print{
+  body{background:#fff}
+  .topo,.abas,.nao-imprimir{display:none!important}
+  .conteudo{margin:0;max-width:none;padding:0}
+  .cartao{box-shadow:none;padding:0;margin:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}

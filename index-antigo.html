@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal do Holerite · Impakto</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul-escuro:#06104a; --azul:#0b2a8f; --azul-medio:#1d3fb8;
+  --amarelo:#f1e15b; --amarelo-escuro:#d9c43a;
+  --cinza:#eef1f8; --texto:#1a2140; --verde:#1f8a4c; --vermelho:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;color:var(--texto);background:var(--cinza)}
+.oculto{display:none!important}
+
+/* ================= LOGIN COM ESTEIRA ================= */
+#tela-login{position:relative;height:100vh;height:100svh;min-height:620px;overflow:hidden;background:var(--azul-escuro);
+            color:#fff;user-select:none;-webkit-user-select:none}
+#tela-login .topo-login{position:relative;z-index:5;padding:18px 32px 0}
+#tela-login .marca-login{display:flex;flex-direction:column;align-items:center}
+
+/* ---- Logo: arquivo logo.png (fundo transparente) na mesma pasta ---- */
+#tela-login .logo-recorte{
+  --largura:250px;
+  position:relative;
+  width:var(--largura);
+  height:calc(var(--largura) * .6);
+  background:url('logo.png') center/contain no-repeat;
+}
+#tela-login .logo-reserva{display:none;position:absolute;inset:0;align-items:center;justify-content:center;
+                          font-weight:800;font-style:italic;font-size:2.2rem;letter-spacing:2px;color:#fff}
+#tela-login .logo-recorte.sem-imagem{background:none}
+#tela-login .logo-recorte.sem-imagem .logo-reserva{display:flex}
+#tela-login .titulo-portal{font-family:'Montserrat',sans-serif;font-weight:600;font-size:21px;color:var(--amarelo);
+                           letter-spacing:.01em;margin-top:2px}
+
+#tela-login .lg{display:flex;justify-content:center;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px}
+#tela-login .lg label{display:flex;flex-direction:column;gap:6px;margin:0;font-size:12px;font-weight:500;color:#8E9BC9}
+#tela-login .lg input{width:230px;height:44px;margin:0;padding:0 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);
+                      background:rgba(255,255,255,.06);color:#fff;font-size:15px;user-select:text;-webkit-user-select:text}
+#tela-login .lg input::placeholder{color:#5A6699}
+#tela-login .lg input:focus{outline:none;border-color:var(--amarelo);box-shadow:0 0 0 3px rgba(241,225,91,.18)}
+#tela-login .lg input.ruim{border-color:#FF9B8A}
+#tela-login .lg button{height:44px;padding:0 30px;border-radius:12px;border:none;background:var(--amarelo);color:var(--azul-escuro);
+                       font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+#tela-login .lg button:hover{background:#FFEA70}
+#login-msg{min-height:20px;margin-top:10px;text-align:center;font-size:13px;color:#FF9B8A}
+#tela-login .link-esqueci{display:block;margin:0 auto;background:none;border:none;color:#8E9BC9;font:inherit;
+                          font-size:12.5px;text-decoration:underline;cursor:pointer}
+#tela-login .link-esqueci:hover{color:var(--amarelo)}
+
+#tela-login .belt{position:absolute;left:0;right:0;top:320px;cursor:grab;touch-action:pan-y}
+#tela-login .codes{position:absolute;inset:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);
+                   mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
+#tela-login .pp,#tela-login .cd{position:absolute;top:58px;left:0;width:var(--cw);height:var(--ch);overflow:hidden;container-type:inline-size}
+#tela-login .pp{border-radius:calc(var(--cw) * .032);background:#F4EEDC;color:#2b2a24;will-change:transform,clip-path;z-index:1}
+#tela-login .pi{padding:3.8cqw 4.5cqw;font-size:3.5cqw;line-height:1.5}
+#tela-login .ph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #d8cfb4;padding-bottom:1.3cqw}
+#tela-login .ph b{font-style:italic;font-weight:700;font-size:4.8cqw;color:var(--azul)}
+#tela-login .ph span,#tela-login .pm{color:#6b6656}
+#tela-login .pm{margin:1.6cqw 0 1.3cqw}
+#tela-login .pr{display:flex;justify-content:space-between;border-bottom:1px dotted #d8cfb4;padding:.3cqw 0}
+#tela-login .neg{color:#9a3412}
+#tela-login .pl{display:flex;justify-content:space-between;background:var(--amarelo);color:var(--azul-escuro);
+                padding:1.3cqw 2.6cqw;border-radius:1.3cqw;margin-top:2.2cqw}
+#tela-login .pl b{font-weight:600}
+#tela-login .ps{margin-top:2.9cqw;color:#8a846f}
+#tela-login .cd{visibility:hidden}
+#tela-login .cd pre{margin:0;padding:3.8cqw 1.9cqw;font:400 3.5cqw/1.45 'IBM Plex Mono',monospace;color:#8E9BC9;white-space:pre}
+#tela-login .cd .cm{color:#56639a}
+#tela-login canvas{position:absolute;left:0;top:0;pointer-events:none;z-index:2}
+#tela-login .scan{position:absolute;left:50%;top:46px;width:0;z-index:3;pointer-events:none}
+#tela-login .scan i{position:absolute;left:-2px;top:0;bottom:0;width:4px;border-radius:4px;
+                    background:linear-gradient(#FFF6B0,var(--amarelo) 12%,var(--amarelo) 88%,#FFF6B0);
+                    box-shadow:0 0 10px 2px rgba(241,225,91,.85),0 0 34px 10px rgba(241,225,91,.32)}
+#tela-login .scan b{position:absolute;left:0;top:4%;height:92%;width:42px;
+                    background:linear-gradient(90deg,rgba(241,225,91,.5),transparent);filter:blur(6px)}
+#tela-login .badge{position:absolute;left:50%;top:0;transform:translateX(-50%);display:flex;flex-direction:column;
+                   align-items:center;gap:6px;z-index:4;pointer-events:none}
+#tela-login .badge .lb{font-size:12px;color:#8E9BC9;white-space:nowrap}
+#tela-login .pill{display:flex;height:26px;border-radius:99px;overflow:hidden;box-shadow:0 0 18px rgba(241,225,91,.35);
+                  font:500 13px 'IBM Plex Mono',monospace;white-space:nowrap}
+#tela-login .pill .n{display:flex;align-items:center;justify-content:flex-end;min-width:13ch;padding:0 11px 0 13px;
+                     background:var(--amarelo);color:var(--azul-escuro);font-variant-numeric:tabular-nums}
+#tela-login .pill .k{display:flex;align-items:center;padding:0 12px 0 10px;background:#FBF5C4;color:#6b5a00;font-size:12px}
+
+@media(max-width:600px){
+  #tela-login .topo-login{padding:14px 16px 0}
+  #tela-login .logo-recorte{--largura:200px}
+  #tela-login .titulo-portal{font-size:18px}
+  #tela-login .lg{flex-direction:column;align-items:stretch;max-width:340px;margin:14px auto 0}
+  #tela-login .lg input{width:100%}
+}
+
+/* ================= FORMULÁRIOS E BOTÕES (telas internas) ================= */
+label{display:block;font-size:.8rem;font-weight:600;color:#3a4270;margin-bottom:6px}
+input,select{width:100%;padding:11px 13px;border:1.5px solid #cfd5ea;border-radius:10px;font:inherit;
+             font-size:.92rem;margin-bottom:16px;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--azul-medio);box-shadow:0 0 0 3px rgba(29,63,184,.15)}
+select:disabled{background:#f1f3f9;color:#7a809f}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:.85rem;line-height:1.5;margin-bottom:18px;cursor:pointer}
+.check input{width:auto;margin:4px 0 0;accent-color:var(--azul)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border:none;
+     border-radius:10px;font:inherit;font-weight:600;cursor:pointer;transition:.15s}
+.btn:focus-visible{outline:3px solid rgba(29,63,184,.35);outline-offset:2px}
+.btn-primario{background:var(--azul);color:#fff}
+.btn-primario:hover{background:var(--azul-medio)}
+.btn-amarelo{background:var(--amarelo);color:var(--azul-escuro)}
+.btn-amarelo:hover{background:var(--amarelo-escuro)}
+.btn-claro{background:#e3e8f7;color:var(--azul)}
+.btn-perigo{background:#fbe4e1;color:var(--vermelho)}
+.btn-perigo-forte{background:var(--vermelho);color:#fff}
+.btn-perigo-forte:hover{background:#a5301f}
+.btn-contorno{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn-contorno:hover{border-color:var(--amarelo);color:var(--amarelo)}
+.btn-pequeno{padding:7px 12px;font-size:.8rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.erro,.sucesso{padding:10px 12px;border-radius:8px;font-size:.85rem;margin-bottom:16px}
+.erro{background:#fdecea;color:var(--vermelho)}
+.sucesso{background:#e5f5ec;color:var(--verde)}
+.alerta{background:#fff8dc;border-left:4px solid var(--amarelo-escuro);padding:12px 14px;margin-bottom:16px;font-size:.9rem}
+.sub{color:#5a6185;font-size:.9rem;margin:4px 0 22px}
+.dica-campo{color:#7a809f;font-size:.8rem}
+.busca{max-width:320px;margin:0}
+.senha-padrao-info{background:var(--cinza);border-radius:10px;padding:8px 13px;font-size:.88rem;margin-bottom:16px;line-height:1.5}
+.senha-padrao-info b{font-family:'IBM Plex Mono',monospace;color:var(--azul-escuro)}
+
+/* ================= ESTRUTURA DAS TELAS INTERNAS ================= */
+.topo{background:var(--azul-escuro);color:#fff;display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;border-bottom:4px solid var(--amarelo);gap:12px;flex-wrap:wrap}
+.topo .marca{font-weight:800;font-style:italic;font-size:1.3rem;letter-spacing:1px}
+.topo .marca span{color:var(--amarelo);font-style:normal;font-weight:500;font-size:1rem}
+.topo .usuario{display:flex;align-items:center;gap:10px;font-size:.9rem;flex-wrap:wrap}
+.conteudo{max-width:1100px;margin:28px auto;padding:0 20px}
+.cartao{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(10,30,90,.06);margin-bottom:22px}
+.cartao h2{font-size:1.1rem;color:var(--azul-escuro);margin-bottom:16px}
+.linha{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.linha select{margin:0;max-width:280px}
+.fim{justify-content:flex-end;margin-top:8px}
+.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+.duas-colunas{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:8px 0 20px}
+.duas-colunas h3{font-size:.9rem;margin-bottom:10px}
+.tit-prov{color:var(--verde)} .tit-desc{color:var(--vermelho)}
+.linha-item{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:6px}
+.linha-item input{margin:0;padding:9px 10px;font-size:.85rem}
+.barra-totais{background:var(--cinza);padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:.9rem}
+.abas{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.aba{background:#dfe4f3;color:var(--azul);border:none;padding:10px 18px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.aba.ativa{background:var(--azul-escuro);color:var(--amarelo)}
+.tabela-wrap{overflow-x:auto}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600;background:#e3e8f7;color:var(--azul);white-space:nowrap}
+.tag-rh{background:var(--amarelo);color:var(--azul-escuro)}
+.tag-ok{background:#e5f5ec;color:var(--verde)}
+.tag-pend{background:#fff4d6;color:#8a6d00}
+.vazio{color:#7a809f;text-align:center;padding:24px}
+.acoes{display:inline-flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+
+/* ================= TABELAS ================= */
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#e7ebf7;text-align:left;padding:9px 12px;font-size:.72rem;text-transform:uppercase;color:#3a4270}
+td{padding:9px 12px;border-bottom:1px solid #eef0f7}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tfoot td{font-weight:700;background:#f6f8fd}
+
+/* ================= O HOLERITE ================= */
+.holerite{border:1.5px solid var(--azul-escuro);border-radius:6px;overflow:hidden;background:#fff}
+.hol-cab{display:flex;justify-content:space-between;align-items:center;background:var(--azul-escuro);color:#fff;padding:14px 18px}
+.hol-marca{font-weight:800;font-style:italic;font-size:1.4rem;color:var(--amarelo)}
+.hol-cab small{opacity:.85}
+.hol-info{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px 18px;background:#f6f8fd;
+          border-bottom:1px solid #d5dbef;font-size:.85rem}
+.hol-info small{display:block;color:#6a7095;font-size:.68rem;text-transform:uppercase}
+.liquido{display:flex;justify-content:space-between;align-items:center;background:var(--amarelo);
+         color:var(--azul-escuro);padding:14px 18px;font-weight:600}
+.liquido b{font-size:1.3rem}
+.hol-rodape{padding:22px 18px 18px;font-size:.75rem;color:#5a6185}
+.assinatura{margin-top:14px;display:flex;gap:30px}
+.assinatura>div{flex:1;text-align:center}
+.assin-area{height:70px;display:flex;align-items:flex-end;justify-content:center;font-size:.9rem;color:var(--texto)}
+.assin-area img{max-height:70px;max-width:100%}
+.assin-linha{border-top:1px solid #9aa0bd;padding-top:4px}
+.selo{margin-top:14px;background:#e5f5ec;color:var(--verde);padding:8px 12px;border-radius:6px;font-weight:600}
+
+/* ================= JANELAS (assinatura, senha e avisos) ================= */
+.modal-fundo{position:fixed;inset:0;background:rgba(6,16,74,.65);display:flex;align-items:center;
+             justify-content:center;padding:16px;z-index:50;animation:aparecer .15s ease-out}
+.modal{background:#fff;border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:95vh;
+       overflow:auto;border-top:6px solid var(--amarelo);animation:subir .18s ease-out}
+.modal h2{color:var(--azul-escuro);font-size:1.2rem}
+@keyframes aparecer{from{opacity:0}to{opacity:1}}
+@keyframes subir{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.modal-fundo,.modal{animation:none}}
+#assin-canvas{width:100%;height:160px;border:2px dashed #b9c2e0;border-radius:10px;background:#fbfcff;
+              touch-action:none;cursor:crosshair;display:block;margin-bottom:8px}
+
+#modal-dialogo{z-index:60}
+.modal.dialogo{max-width:440px}
+.dlg-topo{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.dlg-topo h2{margin:0;line-height:1.3}
+.dlg-icone{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+           font-weight:800;font-size:1.15rem}
+.dlg-info{background:#e3e8f7;color:var(--azul)}
+.dlg-aviso{background:#fff4d6;color:#8a6d00}
+.dlg-perigo{background:#fbe4e1;color:var(--vermelho)}
+.dlg-sucesso{background:#e5f5ec;color:var(--verde)}
+.dlg-msg{white-space:pre-line;color:#3a4270;font-size:.92rem;line-height:1.6;margin-bottom:18px}
+.dlg-codigo{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cinza);
+            border:1.5px dashed #b9c2e0;border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.dlg-codigo span{font:600 1.6rem 'IBM Plex Mono',monospace;letter-spacing:.08em;color:var(--azul-escuro);user-select:all}
+
+/* ================= CELULAR ================= */
+@media(max-width:800px){
+  .duas-colunas{grid-template-columns:1fr}
+  .hol-info{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ================= IMPRESSÃO / PDF ================= */
+@media print{
+  body{background:#fff}
+  .topo,.abas,.nao-imprimir{display:none!important}
+  .conteudo{margin:0;max-width:none;padding:0}
+  .cartao{box-shadow:none;padding:0;margin:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== TELA DE LOGIN ===================== -->
+<section id="tela-login">
+  <div class="topo-login">
+    <div class="marca-login">
+      <div class="logo-recorte" id="logo-recorte" role="img" aria-label="Impakto - Higiene, Limpeza e Descartáveis">
+        <span class="logo-reserva">IMPAKTO</span>
+      </div>
+      <div class="titulo-portal">Portal do holerite</div>
+    </div>
+    <form class="lg" id="form-login" novalidate>
+      <label>CPF<input id="login-cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" autocomplete="username"></label>
+      <label>Senha<input id="login-senha" type="password" placeholder="Sua senha" autocomplete="current-password"></label>
+      <button type="submit">Entrar</button>
+    </form>
+    <div id="login-msg" role="alert"></div>
+    <button type="button" class="link-esqueci" onclick="esqueciSenha()">Esqueci minha senha</button>
+  </div>
+  <div class="belt" aria-hidden="true">
+    <div class="codes"></div>
+    <div class="cards"></div>
+    <canvas></canvas>
+    <div class="scan"><b></b><i></i></div>
+    <div class="badge"><span class="lb">Papel poupado por ano</span>
+      <span class="pill"><span class="n">−0 folhas</span><span class="k">≈ 0 kg</span></span></div>
+  </div>
+</section>
+
+<!-- ===================== TELA DO FUNCIONÁRIO ===================== -->
+<section id="tela-func" class="oculto">
+  <header class="topo">
+    <div class="marca">IMPAKTO <span>| Meus Holerites</span></div>
+    <div class="usuario"><span id="func-nome"></span>
+      <button class="btn btn-contorno btn-pequeno" onclick="abrirModalSenha(false)">Trocar senha</button>
+      <button class="btn btn-amarelo btn-pequeno" onclick="sair()">Sair</button></div>
+  </header>
+  <main class="conteudo">
+    <div class="cartao nao-imprimir">
+      <div id="func-pendentes" class="alerta oculto"></div>
+      <h2>Escolha o mês</h2>
+      <div class="linha">
+        <select id="func-competencia"></select>
+        <button class="btn btn-primario" id="func-assinar" onclick="abrirModalAssinar()">✍️ Assinar holerite</button>
+        <span id="func-status"></span>
+        <button class="btn btn-amarelo" id="func-imprimir" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+      </div>
+    </div>
+    <div class="cartao" id="func-holerite"></div>
+    <div class="cartao nao-imprimir">
+      <h2>Histórico</h2>
+      <div class="tabela-wrap"><table>
+        <thead><tr><th>Competência</th><th class="num">Proventos</th><th class="num">Descontos</th><th class="num">Líquido</th><th>Status</th><th class="num"></th></tr></thead>
+        <tbody id="tb-historico"></tbody>
+      </table></div>
+    </div>
+  </main>
+</section>
+
+<!-- ===================== JANELA DE ASSINATURA ===================== -->
+<div id="modal-assinar" class="modal-fundo nao-imprimir oculto">
+  <div class="modal">
+    <h2>Assinar holerite</h2>
+    <p class="sub" id="assin-desc"></p>
+    <label class="check"><input type="checkbox" id="assin-ok">
+      <span>Declaro que recebi a importância líquida discriminada neste recibo e que conferi os valores.</span></label>
+    <label>Desenhe sua assinatura no quadro (dedo ou mouse)</label>
+    <canvas id="assin-canvas"></canvas>
+    <button type="button" class="btn btn-claro btn-pequeno" onclick="limparAssinatura()" style="margin-bottom:16px">↺ Limpar desenho</button>
+    <label for="assin-senha">Confirme sua senha</label>
+    <input type="password" id="assin-senha" autocomplete="current-password">
+    <div id="assin-msg" class="oculto"></div>
+    <div class="linha fim">
+      <button class="btn btn-claro" onclick="fecharModalAssinar()">Cancelar</button>
+      <button class="btn btn-primario" onclick="confirmarAssinatura()">Assinar e enviar ao RH</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== JANELA DE TROCA DE SENHA ===================== -->
+<div id="modal-senha" class="modal-fundo nao-imprimir oculto">
+  <div class="modal">
+    <h2 id="senha-titulo">Trocar senha</h2>
+    <p class="sub" id="senha-desc"></p>
+    <div id="senha-atual-box">
+      <label for="senha-atual">Senha atual</label>
+      <input type="password" id="senha-atual" autocomplete="current-password">
+    </div>
+    <label for="senha-nova">Nova senha</label>
+    <input type="password" id="senha-nova" autocomplete="new-password">
+    <label for="senha-conf">Repita a nova senha</label>
+    <input type="password" id="senha-conf" autocomplete="new-password">
+    <div id="senha-msg" class="oculto"></div>
+    <div class="linha fim">
+      <button class="btn btn-claro" id="senha-cancelar" onclick="fecharModalSenha()">Cancelar</button>
+      <button class="btn btn-claro oculto" id="senha-sair" onclick="sair()">Sair</button>
+      <button class="btn btn-primario" onclick="salvarNovaSenha()">Salvar nova senha</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TELA DO RH ===================== -->
+<section id="tela-rh" class="oculto">
+  <header class="topo">
+    <div class="marca">IMPAKTO <span>| Painel do RH</span></div>
+    <div class="usuario"><span id="rh-nome"></span>
+      <button class="btn btn-contorno btn-pequeno" onclick="abrirModalSenha(false)">Trocar senha</button>
+      <button class="btn btn-amarelo btn-pequeno" onclick="sair()">Sair</button></div>
+  </header>
+  <main class="conteudo">
+    <div class="abas">
+      <button class="aba ativa" data-aba="aba-lancar">Lançar holerite</button>
+      <button class="aba" data-aba="aba-lista" id="aba-lista-btn">Holerites lançados</button>
+      <button class="aba" data-aba="aba-func">Funcionários</button>
+    </div>
+
+    <!-- Aba: lançar / editar holerite -->
+    <div id="aba-lancar" class="cartao">
+      <h2 id="lanc-titulo">Lançar holerite</h2>
+      <div id="lanc-editando" class="alerta oculto"></div>
+      <div class="grade">
+        <div><label>Funcionário</label><select id="lanc-func"></select></div>
+        <div><label>Mês</label><select id="lanc-mes"></select></div>
+        <div><label>Ano</label><input id="lanc-ano" type="number" min="2000" max="2100"></div>
+      </div>
+      <div class="linha" style="margin-bottom:6px">
+        <button type="button" class="btn btn-claro btn-pequeno" onclick="copiarMesAnterior()">⧉ Copiar mês anterior</button>
+        <span class="dica-campo">Puxa as linhas do último holerite desse funcionário.</span>
+      </div>
+      <div class="duas-colunas">
+        <div>
+          <h3 class="tit-prov">➕ Proventos (o que o funcionário recebe)</h3>
+          <div id="lista-proventos"></div>
+          <button type="button" class="btn btn-claro btn-pequeno" onclick="novaLinha('p')">+ Adicionar provento</button>
+        </div>
+        <div>
+          <h3 class="tit-desc">➖ Descontos (o que é descontado)</h3>
+          <div id="lista-descontos"></div>
+          <button type="button" class="btn btn-claro btn-pequeno" onclick="novaLinha('d')">+ Adicionar desconto</button>
+        </div>
+      </div>
+      <div class="barra-totais" id="totais-lancamento"></div>
+      <div id="lanc-msg" class="oculto"></div>
+      <div class="linha">
+        <button class="btn btn-primario" id="btn-salvar-hol" onclick="salvarHolerite()">Salvar holerite</button>
+        <button class="btn btn-claro oculto" id="btn-cancelar-hol" onclick="resetarLancamento()">Cancelar edição</button>
+      </div>
+    </div>
+
+    <!-- Aba: lista de holerites -->
+    <div id="aba-lista" class="cartao oculto">
+      <div class="nao-imprimir">
+        <h2>Holerites lançados</h2>
+        <div class="linha" style="margin-bottom:14px">
+          <input id="busca-hol" class="busca" placeholder="🔍 Buscar funcionário pelo nome" oninput="renderLista()">
+          <select id="filtro-status" onchange="renderLista()">
+            <option value="todos">Todos</option>
+            <option value="pendente">Pendentes de assinatura</option>
+            <option value="assinado">Assinados</option>
+          </select>
+          <span id="resumo-assin" style="font-size:.9rem;color:#5a6185"></span>
+        </div>
+        <div class="tabela-wrap"><table>
+          <thead><tr><th>Competência</th><th>Funcionário</th><th class="num">Líquido</th><th>Status</th><th class="num">Ações</th></tr></thead>
+          <tbody id="tb-holerites"></tbody>
+        </table></div>
+      </div>
+      <div id="rh-preview-box" class="oculto" style="margin-top:28px">
+        <div class="linha nao-imprimir" style="margin-bottom:14px">
+          <button class="btn btn-amarelo btn-pequeno" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+          <button class="btn btn-claro btn-pequeno" onclick="fecharPreview()">Fechar</button>
+        </div>
+        <div id="rh-preview"></div>
+      </div>
+    </div>
+
+    <!-- Aba: funcionários -->
+    <div id="aba-func" class="cartao oculto">
+      <h2 id="cad-titulo">Cadastrar pessoa</h2>
+      <form id="form-func" novalidate>
+        <div class="grade">
+          <div><label>Nome completo</label><input id="f-nome"></div>
+          <div><label>CPF</label><input id="f-cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"></div>
+          <div><label>Cargo</label><input id="f-cargo"></div>
+          <div><label>Setor</label><input id="f-setor"></div>
+          <div><label>Data de admissão</label><input id="f-admissao" type="date"></div>
+          <div id="f-senha-box"><label>Senha do primeiro acesso</label>
+            <div class="senha-padrao-info">Padrão: <b id="txt-senha-padrao"></b><br>
+              <span class="dica-campo">A pessoa cria a senha pessoal ao entrar.</span></div></div>
+          <div><label>Perfil de acesso</label>
+            <select id="f-perfil"><option value="func">Funcionário</option><option value="rh">RH</option></select></div>
+        </div>
+        <div id="cad-msg" class="oculto"></div>
+        <div class="linha">
+          <button class="btn btn-primario" type="submit" id="btn-cad">Cadastrar</button>
+          <button type="button" class="btn btn-claro oculto" id="btn-cad-cancelar" onclick="cancelarEdicaoFunc()">Cancelar edição</button>
+        </div>
+      </form>
+
+      <h2 style="margin-top:34px">Pessoas cadastradas</h2>
+      <input id="busca-func" class="busca" style="margin-bottom:14px" placeholder="🔍 Buscar pelo nome ou CPF" oninput="renderFuncionarios()">
+      <div class="tabela-wrap"><table>
+        <thead><tr><th>Nome</th><th>CPF</th><th>Cargo</th><th>Perfil</th><th class="num">Ações</th></tr></thead>
+        <tbody id="tb-func"></tbody>
+      </table></div>
+      <button class="btn btn-claro btn-pequeno" style="margin-top:18px" onclick="restaurarExemplo()">↺ Restaurar dados de exemplo</button>
+    </div>
+  </main>
+</section>
+
+<!-- ===================== JANELA DE AVISO / CONFIRMAÇÃO ===================== -->
+<div id="modal-dialogo" class="modal-fundo nao-imprimir oculto">
+  <div class="modal dialogo" role="alertdialog" aria-modal="true" aria-labelledby="dlg-titulo" aria-describedby="dlg-msg">
+    <div class="dlg-topo"><span id="dlg-icone" class="dlg-icone dlg-info">i</span><h2 id="dlg-titulo"></h2></div>
+    <p id="dlg-msg" class="dlg-msg"></p>
+    <div id="dlg-codigo" class="dlg-codigo oculto">
+      <span id="dlg-codigo-valor"></span>
+      <button type="button" class="btn btn-claro btn-pequeno" id="dlg-copiar">Copiar</button>
+    </div>
+    <div class="linha fim">
+      <button type="button" class="btn btn-claro" id="dlg-cancelar">Cancelar</button>
+      <button type="button" class="btn btn-primario" id="dlg-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   1. DADOS
+   ========================================================= */
+const CHAVE = 'holerite_dados_v1';
+const SENHA_PADRAO = 'Database';   // senha do primeiro acesso de todo funcionário novo (diferencia maiúsculas)
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho',
+               'Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function dadosExemplo(){
+  return {
+    usuarios: [
+      {cpf:'11144477735', nome:'Ana Paula Ribeiro', senha:'rh123', perfil:'rh',
+       cargo:'Analista de RH', setor:'Recursos Humanos', admissao:'2015-03-02'},
+      {cpf:'52998224725', nome:'João da Silva', senha:'1234', perfil:'func',
+       cargo:'Auxiliar de Logística', setor:'Expedição', admissao:'2019-08-12'},
+      {cpf:'12345678909', nome:'Maria Souza', senha:'1234', perfil:'func',
+       cargo:'Assistente Comercial', setor:'Vendas', admissao:'2021-01-18'}
+    ],
+    holerites: [
+      {id:1, cpf:'52998224725', competencia:'2026-09',
+       proventos:[{desc:'Salário base',ref:'30 dias',valor:2400},{desc:'Horas extras 50%',ref:'10h',valor:163.64}],
+       descontos:[{desc:'INSS',ref:'',valor:205.73},{desc:'Vale-transporte',ref:'6%',valor:144}],
+       assinatura:{data:'2026-10-05T11:32:00-03:00', imagem:null, nome:'João da Silva', cpf:'52998224725'}},
+      {id:2, cpf:'52998224725', competencia:'2026-10',
+       proventos:[{desc:'Salário base',ref:'30 dias',valor:2400}],
+       descontos:[{desc:'INSS',ref:'',valor:192},{desc:'Vale-transporte',ref:'6%',valor:144},{desc:'Adiantamento',ref:'40%',valor:960}]},
+      {id:3, cpf:'12345678909', competencia:'2026-10',
+       proventos:[{desc:'Salário base',ref:'30 dias',valor:3100},{desc:'Comissão sobre vendas',ref:'',valor:450}],
+       descontos:[{desc:'INSS',ref:'',valor:300.5},{desc:'Vale-transporte',ref:'6%',valor:186},{desc:'Plano odontológico',ref:'',valor:39.9}]}
+    ]
+  };
+}
+
+function carregar(){
+  try { const d = JSON.parse(localStorage.getItem(CHAVE)); if (d && d.usuarios) return d; } catch(e){}
+  return dadosExemplo();
+}
+function salvar(){
+  try { localStorage.setItem(CHAVE, JSON.stringify(db)); return true; }
+  catch(e){
+    avisar('Não foi possível salvar', 'O navegador não deixou gravar os dados.\nPode ser falta de espaço ou um bloqueio do navegador.', 'perigo');
+    return false;
+  }
+}
+let db = carregar();
+let usuarioAtual = null;
+
+/* =========================================================
+   2. FERRAMENTAS
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const soDigitos = s => (s || '').replace(/\D/g, '');
+
+function formatarCPF(v){
+  const d = soDigitos(v).slice(0, 11);
+  return d.replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
+
+function cpfValido(cpf){
+  const d = soDigitos(cpf);
+  if (d.length !== 11 || /^(\d)\1{10}$/.test(d)) return false;
+  const calc = n => {
+    let soma = 0;
+    for (let i = 0; i < n; i++) soma += Number(d[i]) * (n + 1 - i);
+    const r = (soma * 10) % 11;
+    return r === 10 ? 0 : r;
+  };
+  return calc(9) === Number(d[9]) && calc(10) === Number(d[10]);
+}
+
+const moeda = v => (Number(v) || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+const num   = v => (Number(v) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const soma  = lista => lista.reduce((t, i) => t + (Number(i.valor) || 0), 0);
+const nomeMes = comp => { const [a, m] = comp.split('-'); return MESES[Number(m) - 1] + '/' + a; };
+const fmtData = s => s ? s.split('-').reverse().join('/') : '—';
+const fmtDataHora = iso => new Date(iso).toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'});
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const normalizar = s => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+function aviso(id, texto, tipo){
+  const el = $(id);
+  el.className = tipo === 'ok' ? 'sucesso' : 'erro';
+  el.textContent = texto;
+  if (tipo === 'ok') setTimeout(() => el.classList.add('oculto'), 4000);
+}
+
+$('txt-senha-padrao').textContent = SENHA_PADRAO;
+
+/* ---- Janela de aviso/confirmação no visual da Impakto ---- */
+let resolverDialogo = null;
+
+function dialogo({titulo, mensagem = '', tipo = 'info', botaoOk = 'OK', botaoCancelar = null, perigo = false, codigo = null}){
+  return new Promise(resolve => {
+    if (resolverDialogo) resolverDialogo(false);
+    resolverDialogo = resolve;
+    const icone = $('dlg-icone');
+    icone.className = 'dlg-icone dlg-' + tipo;
+    icone.textContent = {info:'i', aviso:'!', perigo:'!', sucesso:'✓'}[tipo] || 'i';
+    $('dlg-titulo').textContent = titulo;
+    $('dlg-msg').textContent = mensagem;
+    $('dlg-msg').classList.toggle('oculto', !mensagem);
+    $('dlg-codigo').classList.toggle('oculto', !codigo);
+    if (codigo){ $('dlg-codigo-valor').textContent = codigo; $('dlg-copiar').textContent = 'Copiar'; }
+    $('dlg-cancelar').textContent = botaoCancelar || '';
+    $('dlg-cancelar').classList.toggle('oculto', !botaoCancelar);
+    $('dlg-ok').textContent = botaoOk;
+    $('dlg-ok').className = 'btn ' + (perigo ? 'btn-perigo-forte' : 'btn-primario');
+    $('modal-dialogo').classList.remove('oculto');
+    setTimeout(() => $('dlg-ok').focus(), 30);
+  });
+}
+
+function fecharDialogo(valor){
+  $('modal-dialogo').classList.add('oculto');
+  const r = resolverDialogo; resolverDialogo = null;
+  if (r) r(valor);
+}
+
+const avisar = (titulo, mensagem, tipo = 'info', extra = {}) =>
+  dialogo({titulo, mensagem, tipo, botaoOk: 'OK', ...extra});
+
+const perguntar = (titulo, mensagem, opcoes = {}) =>
+  dialogo({titulo, mensagem, tipo: opcoes.perigo ? 'perigo' : 'aviso',
+           botaoOk: opcoes.botao || 'Continuar', botaoCancelar: 'Cancelar', perigo: !!opcoes.perigo});
+
+$('dlg-ok').onclick = () => fecharDialogo(true);
+$('dlg-cancelar').onclick = () => fecharDialogo(false);
+$('modal-dialogo').addEventListener('click', e => {
+  if (e.target.id === 'modal-dialogo' && !$('dlg-cancelar').classList.contains('oculto')) fecharDialogo(false);
+});
+document.addEventListener('keydown', e => {
+  if ($('modal-dialogo').classList.contains('oculto')) return;
+  if (e.key === 'Escape') fecharDialogo($('dlg-cancelar').classList.contains('oculto'));
+});
+$('dlg-copiar').onclick = async () => {
+  try { await navigator.clipboard.writeText($('dlg-codigo-valor').textContent); $('dlg-copiar').textContent = 'Copiado ✓'; }
+  catch(e){ $('dlg-copiar').textContent = 'Selecione e copie'; }
+};
+
+/* Se o logo.png não for encontrado, mostra o texto "IMPAKTO" no lugar */
+(function(){
+  const teste = new Image();
+  teste.onerror = () => $('logo-recorte').classList.add('sem-imagem');
+  teste.src = 'logo.png';
+})();
+
+/* =========================================================
+   3. ESTEIRA ANIMADA DA TELA DE LOGIN (papel → scanner → digital)
+   ========================================================= */
+const esteira = (() => {
+  const tela = $('tela-login'), topoEl = tela.querySelector('.topo-login'), belt = tela.querySelector('.belt');
+  const cv = belt.querySelector('canvas'), fx = cv.getContext('2d'), scan = belt.querySelector('.scan');
+  const cardsEl = belt.querySelector('.cards'), codesEl = belt.querySelector('.codes');
+  const nEl = belt.querySelector('.pill .n'), kEl = belt.querySelector('.pill .k');
+  const PAL = ['#B89A00','#D6B814','#F1E15B','#F5E97F','#FAF2B8','#FFFBE6','#FFFFFF'];
+
+  const DOCS = [
+    {t:'Holerite mensal', n:'João da Silva', c:'Outubro/2026', lb:'Líquido a receber', l:'R$ 2.213,91', f:2880,
+     r:[['Salário base','2.400,00'],['Horas extras 50%','163,64'],['INSS','-205,73'],['Vale-transporte','-144,00']],
+     code:'{\n  "doc": "holerite",\n  "competencia": "2026-10",\n  "funcionario": "João da Silva",\n  "proventos": 2563.64,\n  "descontos": 349.73,\n  "liquido": 2213.91,\n  "entregue": "app · 2 min",\n  "assinado": "05/11 14:32 ✓"\n}'},
+    {t:'Adiantamento', n:'Maria Souza', c:'Outubro/2026', lb:'Líquido a receber', l:'R$ 1.240,00', f:2880,
+     r:[['Adiantamento 40%','1.240,00'],['Descontos','0,00']],
+     code:'{\n  "doc": "adiantamento",\n  "competencia": "2026-10",\n  "funcionario": "Maria Souza",\n  "valor": 1240.00,\n  "entregue": "app · 1 min",\n  "assinado": "20/10 09:05 ✓"\n}'},
+    {t:'Recibo de férias', n:'Carlos Lima', c:'Novembro/2026', lb:'Líquido a receber', l:'R$ 3.580,00', f:240,
+     r:[['Férias 30 dias','3.000,00'],['1/3 constitucional','1.000,00'],['INSS','-420,00']],
+     code:'{\n  "doc": "ferias",\n  "periodo": "02/11 → 01/12",\n  "funcionario": "Carlos Lima",\n  "bruto": 4000.00,\n  "liquido": 3580.00,\n  "aviso": "enviado 30 dias antes",\n  "assinado": "03/10 16:20 ✓"\n}'},
+    {t:'13º · 1ª parcela', n:'Ana Ribeiro', c:'Novembro/2026', lb:'Líquido a receber', l:'R$ 1.550,00', f:240,
+     r:[['13º salário 1ª parcela','1.550,00'],['Descontos','0,00']],
+     code:'{\n  "doc": "13_salario",\n  "parcela": 1,\n  "funcionario": "Ana Ribeiro",\n  "valor": 1550.00,\n  "pago_em": "2026-11-30",\n  "assinado": "pendente"\n}'},
+    {t:'Informe de rendimentos', n:'João da Silva', c:'Ano-base 2025', lb:'Total do ano', l:'R$ 31.200,00', f:240,
+     r:[['Rendimentos tributáveis','31.200,00'],['Contribuição INSS','2.940,00'],['IRRF retido','0,00']],
+     code:'{\n  "doc": "informe_rendimentos",\n  "ano_base": 2025,\n  "funcionario": "João da Silva",\n  "tributavel": 31200.00,\n  "inss": 2940.00,\n  "irrf": 0.00,\n  "formato": "PDF para a Receita"\n}'},
+    {t:'Vale-transporte', n:'Maria Souza', c:'Outubro/2026', lb:'Valor recebido', l:'R$ 220,00', f:2880,
+     r:[['Dias úteis','22'],['Passagens','44 × 5,00'],['Desconto em folha 6%','-144,00']],
+     code:'{\n  "doc": "vale_transporte",\n  "competencia": "2026-10",\n  "funcionario": "Maria Souza",\n  "dias_uteis": 22,\n  "valor": 220.00,\n  "assinado": "01/10 08:47 ✓"\n}'}
+  ];
+
+  const N = DOCS.length, cards = [], codes = [];
+  DOCS.forEach(d => {
+    const c = document.createElement('div'); c.className = 'pp';
+    c.innerHTML = '<div class="pi"><div class="ph"><b>IMPAKTO</b><span>' + d.t + '</span></div>' +
+      '<div class="pm">' + d.n + ' · ' + d.c + '</div>' +
+      d.r.map(([a, b]) => '<div class="pr"><span>' + a + '</span><span class="' + (b[0] === '-' ? 'neg' : '') + '">' +
+        b.replace('-', '−') + '</span></div>').join('') +
+      '<div class="pl"><span>' + d.lb + '</span><b>' + d.l + '</b></div>' +
+      '<div class="ps">Assinatura do funcionário ______________</div></div>';
+    cardsEl.appendChild(c); cards.push(c);
+
+    const k = document.createElement('div'); k.className = 'cd';
+    const pre = document.createElement('pre'), cm = document.createElement('span');
+    cm.className = 'cm'; cm.textContent = '// papel → digital · 2 vias → 0\n';
+    pre.appendChild(cm); pre.appendChild(document.createTextNode(d.code));
+    k.appendChild(pre); codesEl.appendChild(k); codes.push(k);
+  });
+
+  const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, cw, ch, gap, Lx, dpr, BH, rad, off = null, vel = 0, hover = 0, hov = false, drag = false,
+      lx = 0, lt = 0, shown = 0, curI = -1, sparks = [], last = 0, rodando = false;
+  const mod = (a, n) => ((a % n) + n) % n;
+
+  function hash(a, b, c){
+    let h = (Math.imul(a, 374761393) + Math.imul(b, 668265263) + Math.imul(c, 2147483647)) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  }
+
+  function medir(){
+    W = tela.clientWidth; H = tela.clientHeight;
+    const alturaTopo = topoEl.offsetHeight + 10;
+    let ideal = W < 768 ? W * .72 : Math.min(520, Math.max(300, W * .4));
+    const cabeAltura = (H - alturaTopo - 116 - 16) / .64;
+    cw = Math.round(Math.max(220, Math.min(ideal, cabeAltura)));
+    ch = Math.round(cw * .64); gap = Math.round(Math.max(24, W * .05)); Lx = W / 2; rad = cw * .032;
+    belt.style.setProperty('--cw', cw + 'px'); belt.style.setProperty('--ch', ch + 'px');
+    BH = ch + 116;
+    belt.style.top = (alturaTopo + Math.max(0, (H - alturaTopo - BH) / 2)) + 'px';
+    belt.style.height = BH + 'px';
+    scan.style.height = (ch + 34) + 'px';
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = W * dpr; cv.height = BH * dpr; cv.style.width = W + 'px'; cv.style.height = BH + 'px';
+    if (off === null) off = Lx - .62 * cw;
+  }
+
+  function desenharEfeito(x, i, t, cut){
+    const top = 58, larg = Math.min(150, x + cw - Lx);
+    if (larg > 0){
+      const g = fx.createLinearGradient(Lx, 0, Lx + 150, 0);
+      g.addColorStop(0, 'rgba(241,225,91,.38)'); g.addColorStop(1, 'rgba(241,225,91,0)');
+      fx.fillStyle = g; fx.fillRect(Lx, top, larg, ch);
+    }
+    const R = .3 * cw, cel = 3, linhas = Math.ceil(ch / cel), tw = reduzir ? 0 : Math.floor(t * 9);
+    const g0 = Math.floor(cut / cel), g1 = Math.min(Math.ceil(cw / cel), Math.ceil((cut + R) / cel));
+    for (let gx = g0; gx < g1; gx++){
+      const sx = x + gx * cel, d = sx - Lx;
+      if (d < 0 || d > R) continue;
+      const p = Math.pow(1 - d / R, 1.7);
+      for (let r = -5; r < linhas + 5; r++){
+        const dentro = r >= 0 && r < linhas, dist = r < 0 ? -r : r - linhas + 1;
+        const lim = dentro ? p * .92 : p * .16 * (1 - dist / 6);
+        if (lim <= 0 || hash(gx, r, i) >= lim) continue;
+        if (!reduzir && hash(gx, r, tw + 97) < .22) continue;
+        const h2 = hash(r, gx, i + 31);
+        fx.fillStyle = d < 10 ? PAL[4 + Math.floor(h2 * 3)] : PAL[Math.floor(h2 * h2 * 7)];
+        const s = 1.1 + h2 * 1.7;
+        const jx = reduzir ? 0 : (hash(gx, r, i + 7) - .5) * 1.6, jy = reduzir ? 0 : (hash(r, gx, i + 11) - .5) * 1.6;
+        fx.fillRect(sx + jx, top + r * cel + jy, s, s);
+      }
+    }
+  }
+
+  function quadro(agora){
+    if (!rodando) return;
+    const dt = Math.min(.05, (agora - last) / 1000); last = agora;
+    hover += ((hov ? 1 : 0) - hover) * Math.min(1, dt * 4);
+    if (!drag){
+      const alvo = (reduzir ? 0 : -0.09 * W) * (1 - .65 * hover);
+      vel += (alvo - vel) * (1 - Math.exp(-2.2 * dt));
+      off += vel * dt;
+    }
+    const span = cw + gap, periodo = span * N;
+    fx.setTransform(dpr, 0, 0, dpr, 0, 0); fx.clearRect(0, 0, W, BH);
+    let cruzando = -1, prog = 0;
+
+    for (let i = 0; i < N; i++){
+      const x = mod(off + i * span + span, periodo) - span;
+      const cut = Math.max(0, Math.min(cw, Lx - x));
+      const c = cards[i], k = codes[i], tr = 'translate3d(' + x + 'px,0,0)';
+      c.style.transform = tr; k.style.transform = tr;
+      if (cut > 0){
+        c.style.visibility = cut >= cw ? 'hidden' : 'visible';
+        c.style.clipPath = 'inset(0 0 0 ' + cut + 'px round 0 ' + rad + 'px ' + rad + 'px 0)';
+        c.style.webkitMaskImage = c.style.maskImage =
+          'linear-gradient(90deg,transparent ' + cut + 'px,#000 ' + (cut + 26) + 'px)';
+        k.style.visibility = 'visible'; k.style.clipPath = 'inset(0 ' + (cw - cut) + 'px 0 0)';
+      } else {
+        c.style.visibility = 'visible'; c.style.clipPath = '';
+        c.style.webkitMaskImage = c.style.maskImage = ''; k.style.visibility = 'hidden';
+      }
+      if (cut > 0 && cut < cw){ cruzando = i; prog = cut / cw; }
+      if (cut > 0 && x + cw > Lx) desenharEfeito(x, i, agora / 1000, cut);
+    }
+
+    if (!reduzir && cruzando >= 0){
+      for (let s = 0; s < 3; s++) if (Math.random() < .7) sparks.push({
+        x: Lx + Math.random() * 30, y: 48 + Math.random() * (ch + 20),
+        vx: -30 + Math.random() * 70 + vel * .6, vy: (Math.random() - .5) * 50,
+        s: .8 + Math.random() * 1.8, c: PAL[Math.floor(Math.random() * 7)], l: .3 + Math.random() * .8
+      });
+    }
+    sparks = sparks.filter(p => (p.l -= dt) > 0);
+    for (const p of sparks){
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      fx.globalAlpha = Math.min(1, p.l * 2.2); fx.fillStyle = p.c; fx.fillRect(p.x, p.y, p.s, p.s);
+    }
+    fx.globalAlpha = 1;
+
+    if (cruzando >= 0){
+      const f = DOCS[cruzando].f;
+      if (cruzando !== curI){
+        curI = cruzando; shown = f * prog;
+        kEl.textContent = '≈ ' + (f * .0047).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' kg';
+      }
+      shown += (f * prog - shown) * Math.min(1, dt * 14);
+      nEl.textContent = '−' + Math.round(shown).toLocaleString('pt-BR') + ' folhas';
+    }
+    requestAnimationFrame(quadro);
+  }
+
+  belt.addEventListener('pointerenter', () => hov = true);
+  belt.addEventListener('pointerleave', () => hov = false);
+  belt.addEventListener('pointerdown', e => {
+    drag = true; belt.setPointerCapture(e.pointerId); lx = e.clientX; lt = performance.now(); belt.style.cursor = 'grabbing';
+  });
+  belt.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const n = performance.now(), dx = e.clientX - lx;
+    off += dx; vel = dx / Math.max(8, n - lt) * 1000 * .8 + vel * .2; lx = e.clientX; lt = n;
+  });
+  const soltar = () => { drag = false; belt.style.cursor = 'grab'; };
+  belt.addEventListener('pointerup', soltar); belt.addEventListener('pointercancel', soltar);
+  belt.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)){ vel += -e.deltaX * 6; e.preventDefault(); }
+  }, {passive:false});
+  window.addEventListener('resize', () => { if (rodando) medir(); });
+  if (document.fonts) document.fonts.ready.then(() => { if (rodando) medir(); });
+
+  return {
+    iniciar(){ if (rodando) return; rodando = true; medir(); last = performance.now(); requestAnimationFrame(quadro); },
+    parar(){ rodando = false; drag = false; }
+  };
+})();
+
+/* =========================================================
+   4. MODELO VISUAL DO HOLERITE
+   ========================================================= */
+function htmlHolerite(h){
+  const f = db.usuarios.find(u => u.cpf === h.cpf) ||
+            {nome:'(funcionário removido)', cpf:h.cpf, cargo:'', setor:'', admissao:''};
+  const tp = soma(h.proventos), td = soma(h.descontos);
+  const linhas = [
+    ...h.proventos.map(p => ({...p, tipo:'p'})),
+    ...h.descontos.map(p => ({...p, tipo:'d'}))
+  ];
+  const a = h.assinatura;
+  const imgOk = a && typeof a.imagem === 'string' && a.imagem.startsWith('data:image/png');
+  const blocoAssinatura = `
+    <div class="assinatura">
+      <div><div class="assin-area">${a ? fmtDataHora(a.data) : ''}</div><div class="assin-linha">Data</div></div>
+      <div><div class="assin-area">${a ? (imgOk ? `<img src="${a.imagem}" alt="Assinatura">` : `<i>${esc(a.nome)}</i>`) : ''}</div>
+           <div class="assin-linha">Assinatura do funcionário</div></div>
+    </div>
+    ${a ? `<div class="selo">✓ Assinado eletronicamente por ${esc(a.nome)} (CPF ${formatarCPF(a.cpf)}) em ${fmtDataHora(a.data)}.</div>` : ''}`;
+
+  return `
+  <div class="holerite">
+    <div class="hol-cab">
+      <div><div class="hol-marca">IMPAKTO</div><small>Higiene, Limpeza e Descartáveis</small></div>
+      <div style="text-align:right"><b>Recibo de Pagamento de Salário</b><br>
+        <small>Competência: ${nomeMes(h.competencia)}</small></div>
+    </div>
+    <div class="hol-info">
+      <div><small>Funcionário</small>${esc(f.nome)}</div>
+      <div><small>CPF</small>${formatarCPF(f.cpf)}</div>
+      <div><small>Cargo</small>${esc(f.cargo) || '—'}</div>
+      <div><small>Setor</small>${esc(f.setor) || '—'}</div>
+      <div><small>Admissão</small>${fmtData(f.admissao)}</div>
+    </div>
+    <table>
+      <thead><tr><th>Descrição</th><th>Referência</th><th class="num">Vencimentos</th><th class="num">Descontos</th></tr></thead>
+      <tbody>${linhas.map(l => `
+        <tr><td>${esc(l.desc)}</td><td>${esc(l.ref)}</td>
+            <td class="num">${l.tipo === 'p' ? num(l.valor) : ''}</td>
+            <td class="num">${l.tipo === 'd' ? num(l.valor) : ''}</td></tr>`).join('')}
+      </tbody>
+      <tfoot><tr><td colspan="2">Totais</td><td class="num">${num(tp)}</td><td class="num">${num(td)}</td></tr></tfoot>
+    </table>
+    <div class="liquido"><span>Valor líquido a receber</span><b>${moeda(tp - td)}</b></div>
+    <div class="hol-rodape">
+      Declaro ter recebido a importância líquida discriminada neste recibo.
+      ${blocoAssinatura}
+    </div>
+  </div>`;
+}
+
+/* =========================================================
+   5. LOGIN / LOGOUT / SENHAS
+   ========================================================= */
+function mostrarTela(id){
+  ['tela-login','tela-func','tela-rh'].forEach(t => $(t).classList.toggle('oculto', t !== id));
+  if (id === 'tela-login') esteira.iniciar(); else esteira.parar();
+  window.scrollTo(0, 0);
+}
+
+function msgLogin(texto, campoComErro, tipo){
+  const el = $('login-msg');
+  el.textContent = texto || '';
+  el.style.color = tipo === 'info' ? 'var(--amarelo)' : '#FF9B8A';
+  ['login-cpf','login-senha'].forEach(c => $(c).classList.toggle('ruim', c === campoComErro));
+}
+
+function esqueciSenha(){
+  msgLogin('Procure o RH da Impakto para redefinir sua senha.', null, 'info');
+}
+
+$('login-cpf').addEventListener('input', e => { e.target.value = formatarCPF(e.target.value); msgLogin(''); });
+$('login-senha').addEventListener('input', () => msgLogin(''));
+$('f-cpf').addEventListener('input', e => e.target.value = formatarCPF(e.target.value));
+
+$('form-login').addEventListener('submit', e => {
+  e.preventDefault();
+  const cpf = soDigitos($('login-cpf').value);
+  const senha = $('login-senha').value;
+  if (!cpf) return msgLogin('Digite seu CPF.', 'login-cpf');
+  if (!cpfValido(cpf)) return msgLogin('CPF inválido. Confira os números.', 'login-cpf');
+  if (!senha) return msgLogin('Digite sua senha.', 'login-senha');
+  const u = db.usuarios.find(u => u.cpf === cpf && u.senha === senha);
+  if (!u) return msgLogin('CPF ou senha incorretos.');
+  msgLogin('');
+  entrar(u);
+});
+
+function entrar(u){
+  usuarioAtual = u;
+  try { sessionStorage.setItem('holerite_sessao', u.cpf); } catch(e){}
+  if (u.perfil === 'rh') { mostrarTela('tela-rh'); iniciarRH(); }
+  else { mostrarTela('tela-func'); iniciarFunc(); }
+  if (u.trocarSenha) abrirModalSenha(true);   // primeiro acesso (senha padrão) ou senha redefinida pelo RH
+}
+
+function sair(){
+  usuarioAtual = null;
+  try { sessionStorage.removeItem('holerite_sessao'); } catch(e){}
+  $('form-login').reset();
+  msgLogin('');
+  fecharModalAssinar();
+  senhaObrigatoria = false;
+  $('modal-senha').classList.add('oculto');
+  if (resolverDialogo) fecharDialogo(false);
+  mostrarTela('tela-login');
+}
+
+/* ---- Janela de troca de senha ---- */
+let senhaObrigatoria = false;
+
+function abrirModalSenha(obrigatoria){
+  senhaObrigatoria = !!obrigatoria;
+  $('senha-titulo').textContent = obrigatoria ? 'Crie sua senha pessoal' : 'Trocar senha';
+  $('senha-desc').textContent = obrigatoria
+    ? 'Você entrou com a senha padrão. Para continuar, crie agora uma senha só sua, com pelo menos 6 caracteres.'
+    : 'Escolha uma senha nova com pelo menos 6 caracteres.';
+  $('senha-atual-box').classList.toggle('oculto', obrigatoria);
+  $('senha-cancelar').classList.toggle('oculto', obrigatoria);
+  $('senha-sair').classList.toggle('oculto', !obrigatoria);
+  ['senha-atual','senha-nova','senha-conf'].forEach(id => $(id).value = '');
+  $('senha-msg').classList.add('oculto');
+  $('modal-senha').classList.remove('oculto');
+  $(obrigatoria ? 'senha-nova' : 'senha-atual').focus();
+}
+
+function fecharModalSenha(){
+  if (senhaObrigatoria) return;
+  $('modal-senha').classList.add('oculto');
+}
+
+function salvarNovaSenha(){
+  const atual = $('senha-atual').value, nova = $('senha-nova').value, conf = $('senha-conf').value;
+  if (!senhaObrigatoria && atual !== usuarioAtual.senha) return aviso('senha-msg', 'Senha atual incorreta.');
+  if (nova.length < 6) return aviso('senha-msg', 'A nova senha precisa ter pelo menos 6 caracteres.');
+  if (nova !== conf) return aviso('senha-msg', 'As duas senhas digitadas não são iguais.');
+  if (nova.toLowerCase() === SENHA_PADRAO.toLowerCase()) return aviso('senha-msg', 'Escolha uma senha pessoal, diferente da senha padrão.');
+  if (nova === usuarioAtual.senha) return aviso('senha-msg', 'A nova senha precisa ser diferente da atual.');
+  if (soDigitos(nova) === usuarioAtual.cpf) return aviso('senha-msg', 'Não use o seu CPF como senha.');
+  usuarioAtual.senha = nova;
+  usuarioAtual.trocarSenha = false;
+  if (!salvar()) return;
+  senhaObrigatoria = false;
+  $('modal-senha').classList.add('oculto');
+  avisar('Senha criada', 'Pronto! A partir de agora, entre com o seu CPF e a sua senha pessoal.', 'sucesso');
+}
+$('senha-conf').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); salvarNovaSenha(); } });
+
+/* =========================================================
+   6. TELA DO FUNCIONÁRIO
+   ========================================================= */
+let holeriteAberto = null;
+
+function iniciarFunc(idParaMostrar){
+  $('func-nome').textContent = usuarioAtual.nome;
+  const meus = db.holerites
+    .filter(h => h.cpf === usuarioAtual.cpf)
+    .sort((a, b) => b.competencia.localeCompare(a.competencia));
+  const sel = $('func-competencia'), area = $('func-holerite');
+
+  const pendentes = meus.filter(h => !h.assinatura).length;
+  $('func-pendentes').classList.toggle('oculto', !pendentes);
+  $('func-pendentes').innerHTML = pendentes
+    ? `✍️ Você tem <b>${pendentes} holerite${pendentes > 1 ? 's' : ''}</b> aguardando sua assinatura.` : '';
+
+  renderHistorico(meus);
+
+  if (!meus.length){
+    sel.innerHTML = '<option>Nenhum holerite disponível</option>';
+    sel.disabled = true; $('func-imprimir').disabled = true;
+    $('func-assinar').classList.add('oculto'); $('func-status').innerHTML = '';
+    area.innerHTML = '<p class="vazio">Ainda não há holerites lançados para você.</p>';
+    return;
+  }
+  sel.disabled = false; $('func-imprimir').disabled = false;
+  sel.innerHTML = meus.map(h =>
+    `<option value="${h.id}">${nomeMes(h.competencia)} ${h.assinatura ? '✓ assinado' : '• pendente'}</option>`).join('');
+  if (idParaMostrar) sel.value = idParaMostrar;
+
+  const mostrar = () => {
+    holeriteAberto = meus.find(h => String(h.id) === sel.value);
+    area.innerHTML = htmlHolerite(holeriteAberto);
+    const a = holeriteAberto.assinatura;
+    $('func-assinar').classList.toggle('oculto', !!a);
+    $('func-status').innerHTML = a ? `<span class="tag tag-ok">✓ Assinado em ${fmtDataHora(a.data)}</span>` : '';
+  };
+  sel.onchange = mostrar;
+  mostrar();
+}
+
+function renderHistorico(meus){
+  $('tb-historico').innerHTML = meus.map(h => {
+    const tp = soma(h.proventos), td = soma(h.descontos);
+    return `<tr><td>${nomeMes(h.competencia)}</td>
+      <td class="num">${moeda(tp)}</td><td class="num">${moeda(td)}</td><td class="num"><b>${moeda(tp - td)}</b></td>
+      <td>${h.assinatura ? '<span class="tag tag-ok">✓ Assinado</span>' : '<span class="tag tag-pend">• Pendente</span>'}</td>
+      <td class="num"><button class="btn btn-claro btn-pequeno" onclick="abrirDoHistorico(${h.id})">Ver</button></td></tr>`;
+  }).join('') || '<tr><td colspan="6" class="vazio">Nenhum holerite ainda.</td></tr>';
+}
+
+function abrirDoHistorico(id){
+  $('func-competencia').value = id;
+  $('func-competencia').onchange();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---- Assinatura: quadro de desenho ---- */
+const canvas = $('assin-canvas');
+const ctx = canvas.getContext('2d');
+let desenhando = false, temTraco = false;
+
+function prepararCanvas(){
+  const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#06104a';
+  temTraco = false;
+}
+function posicao(e){ const r = canvas.getBoundingClientRect(); return {x: e.clientX - r.left, y: e.clientY - r.top}; }
+
+canvas.addEventListener('pointerdown', e => {
+  desenhando = true; canvas.setPointerCapture(e.pointerId);
+  const p = posicao(e); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!desenhando) return;
+  const p = posicao(e); ctx.lineTo(p.x, p.y); ctx.stroke(); temTraco = true;
+});
+['pointerup','pointercancel'].forEach(ev => canvas.addEventListener(ev, () => desenhando = false));
+
+function limparAssinatura(){ prepararCanvas(); }
+
+function abrirModalAssinar(){
+  if (!holeriteAberto || holeriteAberto.assinatura) return;
+  $('assin-desc').textContent =
+    `${nomeMes(holeriteAberto.competencia)} · Líquido: ${moeda(soma(holeriteAberto.proventos) - soma(holeriteAberto.descontos))}`;
+  $('assin-ok').checked = false; $('assin-senha').value = '';
+  $('assin-msg').classList.add('oculto');
+  $('modal-assinar').classList.remove('oculto');
+  prepararCanvas();
+}
+function fecharModalAssinar(){ $('modal-assinar').classList.add('oculto'); }
+
+function confirmarAssinatura(){
+  if (!$('assin-ok').checked) return aviso('assin-msg', 'Marque a declaração de recebimento.');
+  if (!temTraco) return aviso('assin-msg', 'Desenhe sua assinatura no quadro.');
+  if ($('assin-senha').value !== usuarioAtual.senha) return aviso('assin-msg', 'Senha incorreta.');
+
+  const h = db.holerites.find(x => x.id === holeriteAberto.id);
+  h.assinatura = {
+    data: new Date().toISOString(),
+    imagem: canvas.toDataURL('image/png'),
+    nome: usuarioAtual.nome,
+    cpf: usuarioAtual.cpf,
+    dispositivo: navigator.userAgent
+  };
+  if (!salvar()) { delete h.assinatura; return; }
+  fecharModalAssinar();
+  iniciarFunc(h.id);
+  avisar('Holerite assinado', `Sua assinatura de ${nomeMes(h.competencia)} foi registrada e enviada ao RH.`, 'sucesso');
+}
+
+/* =========================================================
+   7. TELA DO RH
+   ========================================================= */
+document.querySelectorAll('.aba').forEach(botao => {
+  botao.onclick = () => trocarAba(botao.dataset.aba);
+});
+function trocarAba(id){
+  document.querySelectorAll('.aba').forEach(b => b.classList.toggle('ativa', b.dataset.aba === id));
+  ['aba-lancar','aba-lista','aba-func'].forEach(a => $(a).classList.toggle('oculto', a !== id));
+}
+
+function iniciarRH(){
+  $('rh-nome').textContent = usuarioAtual.nome;
+  $('lanc-mes').innerHTML = MESES.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('');
+  $('busca-hol').value = ''; $('busca-func').value = '';
+  trocarAba('aba-lancar');
+  preencherSelectFuncionarios();
+  resetarLancamento();
+  cancelarEdicaoFunc();
+  renderFuncionarios();
+  renderLista();
+  fecharPreview();
+}
+
+function preencherSelectFuncionarios(){
+  const atual = $('lanc-func').value;
+  const lista = [...db.usuarios].sort((a, b) => a.nome.localeCompare(b.nome));
+  $('lanc-func').innerHTML = '<option value="">Selecione…</option>' +
+    lista.map(u => `<option value="${u.cpf}">${esc(u.nome)} — ${formatarCPF(u.cpf)}</option>`).join('');
+  $('lanc-func').value = lista.some(u => u.cpf === atual) ? atual : '';
+}
+
+/* ---- Lançamento e edição de holerite ---- */
+let editandoHolId = null;
+
+function novaLinha(tipo, item = {desc:'', ref:'', valor:''}){
+  const div = document.createElement('div');
+  div.className = 'linha-item';
+  div.innerHTML = `
+    <input class="i-desc" placeholder="Descrição">
+    <input class="i-ref" placeholder="Ref.">
+    <input class="i-valor" type="number" step="0.01" min="0" placeholder="0,00">
+    <button type="button" class="btn btn-perigo btn-pequeno" title="Remover linha">✕</button>`;
+  div.querySelector('.i-desc').value = item.desc;
+  div.querySelector('.i-ref').value = item.ref;
+  div.querySelector('.i-valor').value = item.valor;
+  div.querySelector('button').onclick = () => { div.remove(); atualizarTotais(); };
+  div.querySelectorAll('input').forEach(i => i.oninput = atualizarTotais);
+  $(tipo === 'p' ? 'lista-proventos' : 'lista-descontos').appendChild(div);
+}
+
+function preencherLinhas(proventos, descontos){
+  $('lista-proventos').innerHTML = ''; $('lista-descontos').innerHTML = '';
+  (proventos.length ? proventos : [{desc:'', ref:'', valor:''}]).forEach(p => novaLinha('p', p));
+  (descontos.length ? descontos : [{desc:'', ref:'', valor:''}]).forEach(d => novaLinha('d', d));
+  atualizarTotais();
+}
+
+function lerLinhas(id){
+  return [...document.querySelectorAll('#' + id + ' .linha-item')].map(d => ({
+    desc:  d.querySelector('.i-desc').value.trim(),
+    ref:   d.querySelector('.i-ref').value.trim(),
+    valor: Math.round((parseFloat(d.querySelector('.i-valor').value) || 0) * 100) / 100
+  })).filter(i => i.desc && i.valor > 0);
+}
+
+function atualizarTotais(){
+  const tp = soma(lerLinhas('lista-proventos')), td = soma(lerLinhas('lista-descontos'));
+  $('totais-lancamento').innerHTML =
+    `Proventos: <b>${moeda(tp)}</b> &nbsp;·&nbsp; Descontos: <b>${moeda(td)}</b> &nbsp;·&nbsp; Líquido: <b>${moeda(tp - td)}</b>`;
+}
+
+function resetarLancamento(){
+  editandoHolId = null;
+  $('lanc-titulo').textContent = 'Lançar holerite';
+  $('lanc-editando').classList.add('oculto');
+  $('btn-salvar-hol').textContent = 'Salvar holerite';
+  $('btn-cancelar-hol').classList.add('oculto');
+  preencherLinhas([{desc:'Salário base', ref:'30 dias', valor:''}], [{desc:'INSS', ref:'', valor:''}]);
+  const hoje = new Date();
+  $('lanc-mes').value = hoje.getMonth() + 1;
+  $('lanc-ano').value = hoje.getFullYear();
+  $('lanc-func').value = '';
+}
+
+function editarHolerite(id){
+  const h = db.holerites.find(x => x.id === id);
+  if (!h) return;
+  trocarAba('aba-lancar');
+  editandoHolId = id;
+  const [ano, mes] = h.competencia.split('-');
+  $('lanc-func').value = h.cpf;
+  $('lanc-mes').value = Number(mes);
+  $('lanc-ano').value = Number(ano);
+  preencherLinhas(h.proventos.map(x => ({...x})), h.descontos.map(x => ({...x})));
+  $('lanc-titulo').textContent = 'Editar holerite';
+  $('lanc-editando').innerHTML = `Editando o holerite de <b>${esc(nomeDe(h.cpf))}</b> · ${nomeMes(h.competencia)}.` +
+    (h.assinatura ? ' <b>Atenção:</b> ele já foi assinado. Se você alterar algo, a assinatura será removida e o funcionário precisará assinar de novo.' : '');
+  $('lanc-editando').classList.remove('oculto');
+  $('btn-salvar-hol').textContent = 'Salvar alterações';
+  $('btn-cancelar-hol').classList.remove('oculto');
+  $('lanc-msg').classList.add('oculto');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+async function copiarMesAnterior(){
+  const cpf = $('lanc-func').value;
+  if (!cpf) return aviso('lanc-msg', 'Escolha o funcionário primeiro.');
+  const comp = `${$('lanc-ano').value}-${String($('lanc-mes').value).padStart(2, '0')}`;
+  const base = db.holerites
+    .filter(h => h.cpf === cpf && h.competencia < comp && h.id !== editandoHolId)
+    .sort((a, b) => b.competencia.localeCompare(a.competencia))[0];
+  if (!base) return aviso('lanc-msg', `${nomeDe(cpf)} não tem holerite anterior a ${nomeMes(comp)}.`);
+  const jaPreenchido = lerLinhas('lista-proventos').length + lerLinhas('lista-descontos').length;
+  if (jaPreenchido && !(await perguntar('Substituir as linhas?',
+      `As linhas que você já preencheu serão trocadas pelas de ${nomeMes(base.competencia)}.`, {botao:'Substituir'}))) return;
+  preencherLinhas(base.proventos.map(x => ({...x})), base.descontos.map(x => ({...x})));
+  aviso('lanc-msg', `Linhas copiadas de ${nomeMes(base.competencia)}. Confira e ajuste os valores antes de salvar.`, 'ok');
+}
+
+async function salvarHolerite(){
+  const cpf = $('lanc-func').value;
+  const mes = Number($('lanc-mes').value), ano = Number($('lanc-ano').value);
+  if (!cpf) return aviso('lanc-msg', 'Escolha o funcionário.');
+  if (!ano || ano < 2000 || ano > 2100) return aviso('lanc-msg', 'Informe um ano válido.');
+  const competencia = `${ano}-${String(mes).padStart(2, '0')}`;
+  const proventos = lerLinhas('lista-proventos'), descontos = lerLinhas('lista-descontos');
+  if (!proventos.length) return aviso('lanc-msg', 'Informe ao menos um provento com descrição e valor.');
+
+  const atual = editandoHolId ? db.holerites.find(h => h.id === editandoHolId) : null;
+
+  if (atual){
+    const mudou = JSON.stringify([cpf, competencia, proventos, descontos]) !==
+                  JSON.stringify([atual.cpf, atual.competencia, atual.proventos, atual.descontos]);
+    if (!mudou) return aviso('lanc-msg', 'Nada foi alterado.');
+    if (atual.assinatura && !(await perguntar('Este holerite já foi assinado',
+        `${nomeDe(atual.cpf)} assinou em ${fmtDataHora(atual.assinatura.data)}.\n\nAo salvar, a assinatura será removida e o funcionário terá que assinar de novo.`,
+        {botao:'Salvar e remover assinatura', perigo:true}))) return;
+  }
+
+  const outro = db.holerites.find(h => h.cpf === cpf && h.competencia === competencia && h !== atual);
+  if (outro){
+    const ok = outro.assinatura
+      ? await perguntar('Já existe um holerite assinado',
+          `${nomeDe(cpf)} já tem um holerite de ${nomeMes(competencia)}, assinado em ${fmtDataHora(outro.assinatura.data)}.\n\nSe continuar, ele será substituído e a assinatura será perdida.`,
+          {botao:'Substituir', perigo:true})
+      : await perguntar('Substituir holerite?',
+          `${nomeDe(cpf)} já tem um holerite de ${nomeMes(competencia)}. O anterior será trocado por este.`,
+          {botao:'Substituir'});
+    if (!ok) return;
+    db.holerites = db.holerites.filter(h => h !== outro);
+  }
+
+  if (atual){
+    atual.cpf = cpf; atual.competencia = competencia;
+    atual.proventos = proventos; atual.descontos = descontos;
+    delete atual.assinatura;
+    atual.editadoEm = new Date().toISOString();
+  } else {
+    db.holerites.push({id: Date.now(), cpf, competencia, proventos, descontos});
+  }
+  salvar(); renderLista(); resetarLancamento();
+  aviso('lanc-msg', atual ? `Holerite de ${nomeMes(competencia)} atualizado!` : `Holerite de ${nomeMes(competencia)} salvo e enviado ao funcionário!`, 'ok');
+}
+
+/* ---- Lista de holerites ---- */
+const nomeDe = cpf => (db.usuarios.find(u => u.cpf === cpf) || {nome:'(removido)'}).nome;
+
+function renderLista(){
+  const filtro = $('filtro-status').value;
+  const termo = normalizar($('busca-hol').value);
+  const total = db.holerites.length;
+  const assinados = db.holerites.filter(h => h.assinatura).length;
+  const pendentes = total - assinados;
+
+  $('resumo-assin').textContent = total ? `${assinados} de ${total} assinados` : '';
+  $('aba-lista-btn').textContent = pendentes
+    ? `Holerites lançados (${pendentes} pendente${pendentes > 1 ? 's' : ''})` : 'Holerites lançados';
+
+  const lista = db.holerites
+    .filter(h => filtro === 'todos' || (filtro === 'assinado' ? h.assinatura : !h.assinatura))
+    .filter(h => !termo || normalizar(nomeDe(h.cpf)).includes(termo))
+    .sort((a, b) => b.competencia.localeCompare(a.competencia) || nomeDe(a.cpf).localeCompare(nomeDe(b.cpf)));
+
+  $('tb-holerites').innerHTML = lista.map(h => `
+    <tr><td>${nomeMes(h.competencia)}</td><td>${esc(nomeDe(h.cpf))}</td>
+        <td class="num">${moeda(soma(h.proventos) - soma(h.descontos))}</td>
+        <td>${h.assinatura
+              ? `<span class="tag tag-ok">✓ Assinado em ${fmtDataHora(h.assinatura.data)}</span>`
+              : '<span class="tag tag-pend">• Pendente</span>'}</td>
+        <td class="num"><span class="acoes">
+          <button class="btn btn-claro btn-pequeno" onclick="verHolerite(${h.id})">Ver</button>
+          <button class="btn btn-claro btn-pequeno" onclick="editarHolerite(${h.id})">Editar</button>
+          <button class="btn btn-perigo btn-pequeno" onclick="excluirHolerite(${h.id})">Excluir</button>
+        </span></td></tr>`).join('')
+    || '<tr><td colspan="5" class="vazio">Nenhum holerite encontrado.</td></tr>';
+}
+
+function verHolerite(id){
+  const h = db.holerites.find(h => h.id === id);
+  $('rh-preview').innerHTML = htmlHolerite(h);
+  $('rh-preview-box').classList.remove('oculto');
+  $('rh-preview-box').scrollIntoView({behavior:'smooth'});
+}
+function fecharPreview(){ $('rh-preview-box').classList.add('oculto'); $('rh-preview').innerHTML = ''; }
+
+async function excluirHolerite(id){
+  const h = db.holerites.find(h => h.id === id);
+  if (!h) return;
+  const extra = h.assinatura ? '\nEste holerite JÁ FOI ASSINADO pelo funcionário.' : '';
+  if (!(await perguntar('Excluir holerite?',
+      `${nomeDe(h.cpf)} · ${nomeMes(h.competencia)}${extra}\n\nIsso não pode ser desfeito.`,
+      {botao:'Excluir', perigo:true}))) return;
+  db.holerites = db.holerites.filter(x => x.id !== id);
+  if (editandoHolId === id) resetarLancamento();
+  salvar(); renderLista(); fecharPreview();
+}
+
+/* ---- Funcionários: cadastro, edição, busca, senha ---- */
+let editandoCpf = null;
+
+function renderFuncionarios(){
+  const termo = normalizar($('busca-func').value), digitos = soDigitos(termo);
+  const lista = [...db.usuarios]
+    .filter(u => !termo || normalizar(u.nome).includes(termo) || (digitos.length >= 3 && u.cpf.includes(digitos)))
+    .sort((a, b) => a.nome.localeCompare(b.nome));
+
+  $('tb-func').innerHTML = lista.map(u => {
+    const eu = u.cpf === usuarioAtual.cpf;
+    return `
+    <tr><td>${esc(u.nome)}${u.trocarSenha ? ' <span class="tag tag-pend">aguardando 1º acesso</span>' : ''}</td>
+        <td>${formatarCPF(u.cpf)}</td><td>${esc(u.cargo) || '—'}</td>
+        <td>${u.perfil === 'rh' ? '<span class="tag tag-rh">RH</span>' : '<span class="tag">Funcionário</span>'}</td>
+        <td class="num"><span class="acoes">
+          <button class="btn btn-claro btn-pequeno" onclick="editarFuncionario('${u.cpf}')">Editar</button>
+          ${eu ? '<small>(você)</small>' : `
+          <button class="btn btn-claro btn-pequeno" onclick="redefinirSenha('${u.cpf}')" title="Voltar para a senha padrão">Senha</button>
+          <button class="btn btn-perigo btn-pequeno" onclick="removerFuncionario('${u.cpf}')">Remover</button>`}
+        </span></td></tr>`;
+  }).join('') || '<tr><td colspan="5" class="vazio">Ninguém encontrado.</td></tr>';
+}
+
+function editarFuncionario(cpf){
+  const u = db.usuarios.find(x => x.cpf === cpf);
+  if (!u) return;
+  editandoCpf = cpf;
+  $('cad-titulo').textContent = 'Editar: ' + u.nome;
+  $('f-nome').value = u.nome;
+  $('f-cpf').value = formatarCPF(u.cpf);
+  $('f-cargo').value = u.cargo || '';
+  $('f-setor').value = u.setor || '';
+  $('f-admissao').value = u.admissao || '';
+  $('f-perfil').value = u.perfil;
+  $('f-perfil').disabled = (cpf === usuarioAtual.cpf);
+  $('f-senha-box').classList.add('oculto');
+  $('btn-cad').textContent = 'Salvar alterações';
+  $('btn-cad-cancelar').classList.remove('oculto');
+  $('cad-msg').classList.add('oculto');
+  $('aba-func').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelarEdicaoFunc(){
+  editandoCpf = null;
+  $('form-func').reset();
+  $('cad-titulo').textContent = 'Cadastrar pessoa';
+  $('f-perfil').disabled = false;
+  $('f-senha-box').classList.remove('oculto');
+  $('btn-cad').textContent = 'Cadastrar';
+  $('btn-cad-cancelar').classList.add('oculto');
+}
+
+$('form-func').addEventListener('submit', e => {
+  e.preventDefault();
+  const nome = $('f-nome').value.trim();
+  const cpf = soDigitos($('f-cpf').value);
+  if (!nome) return aviso('cad-msg', 'Informe o nome.');
+  if (!cpfValido(cpf)) return aviso('cad-msg', 'CPF inválido.');
+  if (db.usuarios.some(u => u.cpf === cpf && u.cpf !== editandoCpf)) return aviso('cad-msg', 'Já existe uma pessoa com esse CPF.');
+  const dados = {nome, cargo: $('f-cargo').value.trim(), setor: $('f-setor').value.trim(), admissao: $('f-admissao').value};
+
+  if (editandoCpf){
+    const u = db.usuarios.find(x => x.cpf === editandoCpf);
+    Object.assign(u, dados);
+    if (u !== usuarioAtual) u.perfil = $('f-perfil').value;
+    if (cpf !== editandoCpf){
+      db.holerites.forEach(h => { if (h.cpf === editandoCpf) h.cpf = cpf; });
+      if (u === usuarioAtual) { try { sessionStorage.setItem('holerite_sessao', cpf); } catch(e){} }
+      u.cpf = cpf;
+    }
+    if (!salvar()) return;
+    cancelarEdicaoFunc();
+    aviso('cad-msg', 'Alterações salvas!', 'ok');
+    $('rh-nome').textContent = usuarioAtual.nome;
+  } else {
+    db.usuarios.push({cpf, ...dados, senha: SENHA_PADRAO, perfil: $('f-perfil').value, trocarSenha: true});
+    if (!salvar()) return;
+    $('form-func').reset();
+    aviso('cad-msg', `Cadastro realizado! No primeiro acesso, ${nome.split(' ')[0]} entra com o CPF e a senha padrão "${SENHA_PADRAO}", e cria a senha pessoal.`, 'ok');
+  }
+  renderFuncionarios(); preencherSelectFuncionarios(); renderLista();
+});
+
+async function redefinirSenha(cpf){
+  const u = db.usuarios.find(x => x.cpf === cpf);
+  if (!u) return;
+  if (!(await perguntar('Voltar para a senha padrão?',
+      `A senha atual de ${u.nome} deixará de funcionar.\nNo próximo acesso, a pessoa entra com a senha padrão e cria uma nova senha pessoal.`,
+      {botao:'Redefinir senha'}))) return;
+  u.senha = SENHA_PADRAO;
+  u.trocarSenha = true;
+  if (!salvar()) return;
+  renderFuncionarios();
+  avisar('Senha redefinida',
+    `${u.nome} já pode entrar com o CPF e a senha padrão abaixo.\nNo acesso, o sistema vai pedir para criar uma senha pessoal.`,
+    'sucesso', {codigo: SENHA_PADRAO});
+}
+
+async function removerFuncionario(cpf){
+  const u = db.usuarios.find(u => u.cpf === cpf);
+  if (!u) return;
+  const qtd = db.holerites.filter(h => h.cpf === cpf).length;
+  const extra = qtd ? `\nOs ${qtd} holerite(s) dessa pessoa também serão apagados, inclusive os assinados.` : '';
+  if (!(await perguntar('Remover funcionário?',
+      `${u.nome} será removido(a) do sistema.${extra}\n\nIsso não pode ser desfeito.`,
+      {botao:'Remover', perigo:true}))) return;
+  db.usuarios = db.usuarios.filter(x => x.cpf !== cpf);
+  db.holerites = db.holerites.filter(h => h.cpf !== cpf);
+  if (editandoCpf === cpf) cancelarEdicaoFunc();
+  if (editandoHolId && !db.holerites.some(h => h.id === editandoHolId)) resetarLancamento();
+  salvar(); renderFuncionarios(); preencherSelectFuncionarios(); renderLista(); fecharPreview();
+}
+
+async function restaurarExemplo(){
+  if (!(await perguntar('Apagar tudo e restaurar o exemplo?',
+      'Todos os funcionários, holerites e assinaturas cadastrados serão APAGADOS e substituídos pelos dados de exemplo.\n\nIsso não pode ser desfeito.',
+      {botao:'Apagar e restaurar', perigo:true}))) return;
+  db = dadosExemplo(); salvar();
+  const eu = db.usuarios.find(u => u.cpf === usuarioAtual.cpf);
+  eu ? entrar(eu) : sair();
+}
+
+/* =========================================================
+   8. AO ABRIR A PÁGINA
+   ========================================================= */
+(function(){
+  let cpf = null;
+  try { cpf = sessionStorage.getItem('holerite_sessao'); } catch(e){}
+  const u = cpf && db.usuarios.find(u => u.cpf === cpf);
+  if (u) entrar(u); else mostrarTela('tela-login');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+/* =========================================================
+   TELA DE LOGIN + ESTEIRA ANIMADA (tema escuro e claro)
+   ========================================================= */
+
+/* ---- Cores do login no tema ESCURO ---- */
+#tela-login{
+  --lg-fundo:#06104a; --lg-texto:#ffffff; --lg-titulo:#f1e15b; --lg-rotulo:#8E9BC9;
+  --lg-campo-bg:rgba(255,255,255,.06); --lg-campo-borda:rgba(255,255,255,.18); --lg-placeholder:#5A6699;
+  --lg-erro:#FF9B8A; --lg-info:#f1e15b; --lg-destaque:#f1e15b;
+  --lg-codigo:#8E9BC9; --lg-comentario:#56639a;
+  --lg-scan:#F1E15B; --lg-scan-ponta:#FFF6B0; --lg-brilho:241,225,91;
+  --lg-papel-sombra:none;
+}
+/* ---- Cores do login no tema CLARO ---- */
+[data-tema="claro"] #tela-login{
+  --lg-fundo:#eef1f8; --lg-texto:#06104a; --lg-titulo:#0b2a8f; --lg-rotulo:#3a4270;
+  --lg-campo-bg:#ffffff; --lg-campo-borda:#cfd5ea; --lg-placeholder:#9aa0bd;
+  --lg-erro:#c0392b; --lg-info:#8a6d00; --lg-destaque:#0b2a8f;
+  --lg-codigo:#5a6185; --lg-comentario:#9aa0bd;
+  --lg-scan:#d9a400; --lg-scan-ponta:#f1e15b; --lg-brilho:217,164,0;
+  --lg-papel-sombra:0 8px 24px rgba(10,30,90,.12);
+}
+
+#tela-login{position:relative;height:100vh;height:100svh;min-height:620px;overflow:hidden;background:var(--lg-fundo);
+            color:var(--lg-texto);user-select:none;-webkit-user-select:none;transition:background .25s}
+#tela-login .topo-login{position:relative;z-index:5;padding:18px 32px 0}
+#tela-login .marca-login{display:flex;flex-direction:column;align-items:center}
+
+/* Botão de tema no canto */
+#tela-login .tema-login{position:absolute;top:16px;right:20px;z-index:6;background:transparent;color:var(--lg-texto);
+                        border:1px solid var(--lg-campo-borda);border-radius:10px;padding:7px 12px;font:inherit;
+                        font-size:.8rem;font-weight:600;cursor:pointer;transition:.15s}
+#tela-login .tema-login:hover{border-color:var(--lg-destaque);color:var(--lg-destaque)}
+
+/* Logo: arquivo logo.png (fundo transparente) na pasta principal */
+#tela-login .logo-recorte{--largura:250px;position:relative;width:var(--largura);height:calc(var(--largura) * .6);
+                          background:url('../logo.png') center/contain no-repeat}
+#tela-login .logo-reserva{display:none;position:absolute;inset:0;align-items:center;justify-content:center;
+                          font-weight:800;font-style:italic;font-size:2.2rem;letter-spacing:2px;color:var(--lg-texto)}
+#tela-login .logo-recorte.sem-imagem{background:none}
+#tela-login .logo-recorte.sem-imagem .logo-reserva{display:flex}
+#tela-login .titulo-portal{font-family:'Montserrat',sans-serif;font-weight:600;font-size:21px;color:var(--lg-titulo);
+                           letter-spacing:.01em;margin-top:2px}
+
+/* Formulário */
+#tela-login .lg{display:flex;justify-content:center;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:16px}
+#tela-login .lg label{display:flex;flex-direction:column;gap:6px;margin:0;font-size:12px;font-weight:500;color:var(--lg-rotulo)}
+#tela-login .lg input{width:230px;height:44px;margin:0;padding:0 14px;border-radius:12px;border:1px solid var(--lg-campo-borda);
+                      background:var(--lg-campo-bg);color:var(--lg-texto);font-size:15px;user-select:text;-webkit-user-select:text}
+#tela-login .lg input::placeholder{color:var(--lg-placeholder)}
+#tela-login .lg input:focus{outline:none;border-color:var(--lg-scan);box-shadow:0 0 0 3px rgba(var(--lg-brilho),.2)}
+#tela-login .lg input.ruim{border-color:var(--lg-erro)}
+#tela-login .lg button{height:44px;padding:0 30px;border-radius:12px;border:none;background:var(--amarelo);color:var(--azul-escuro);
+                       font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+#tela-login .lg button:hover{background:#FFEA70}
+#login-msg{min-height:20px;margin-top:10px;text-align:center;font-size:13px;color:var(--lg-erro)}
+#tela-login .link-esqueci{display:block;margin:0 auto;background:none;border:none;color:var(--lg-rotulo);font:inherit;
+                          font-size:12.5px;text-decoration:underline;cursor:pointer}
+#tela-login .link-esqueci:hover{color:var(--lg-destaque)}
+
+/* Esteira: cartões de papel, "código", scanner e contador */
+#tela-login .belt{position:absolute;left:0;right:0;top:320px;cursor:grab;touch-action:pan-y}
+#tela-login .codes{position:absolute;inset:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);
+                   mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
+#tela-login .pp,#tela-login .cd{position:absolute;top:58px;left:0;width:var(--cw);height:var(--ch);overflow:hidden;container-type:inline-size}
+#tela-login .pp{border-radius:calc(var(--cw) * .032);background:#F4EEDC;color:#2b2a24;box-shadow:var(--lg-papel-sombra);
+                will-change:transform,clip-path;z-index:1}
+#tela-login .pi{padding:3.8cqw 4.5cqw;font-size:3.5cqw;line-height:1.5}
+#tela-login .ph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #d8cfb4;padding-bottom:1.3cqw}
+#tela-login .ph b{font-style:italic;font-weight:700;font-size:4.8cqw;color:var(--azul)}
+#tela-login .ph span,#tela-login .pm{color:#6b6656}
+#tela-login .pm{margin:1.6cqw 0 1.3cqw}
+#tela-login .pr{display:flex;justify-content:space-between;border-bottom:1px dotted #d8cfb4;padding:.3cqw 0}
+#tela-login .neg{color:#9a3412}
+#tela-login .pl{display:flex;justify-content:space-between;background:var(--amarelo);color:var(--azul-escuro);
+                padding:1.3cqw 2.6cqw;border-radius:1.3cqw;margin-top:2.2cqw}
+#tela-login .pl b{font-weight:600}
+#tela-login .ps{margin-top:2.9cqw;color:#8a846f}
+#tela-login .cd{visibility:hidden}
+#tela-login .cd pre{margin:0;padding:3.8cqw 1.9cqw;font:400 3.5cqw/1.45 'IBM Plex Mono',monospace;color:var(--lg-codigo);white-space:pre}
+#tela-login .cd .cm{color:var(--lg-comentario)}
+#tela-login canvas{position:absolute;left:0;top:0;pointer-events:none;z-index:2}
+#tela-login .scan{position:absolute;left:50%;top:46px;width:0;z-index:3;pointer-events:none}
+#tela-login .scan i{position:absolute;left:-2px;top:0;bottom:0;width:4px;border-radius:4px;
+                    background:linear-gradient(var(--lg-scan-ponta),var(--lg-scan) 12%,var(--lg-scan) 88%,var(--lg-scan-ponta));
+                    box-shadow:0 0 10px 2px rgba(var(--lg-brilho),.85),0 0 34px 10px rgba(var(--lg-brilho),.32)}
+#tela-login .scan b{position:absolute;left:0;top:4%;height:92%;width:42px;
+                    background:linear-gradient(90deg,rgba(var(--lg-brilho),.5),transparent);filter:blur(6px)}
+#tela-login .badge{position:absolute;left:50%;top:0;transform:translateX(-50%);display:flex;flex-direction:column;
+                   align-items:center;gap:6px;z-index:4;pointer-events:none}
+#tela-login .badge .lb{font-size:12px;color:var(--lg-rotulo);white-space:nowrap}
+#tela-login .pill{display:flex;height:26px;border-radius:99px;overflow:hidden;box-shadow:0 0 18px rgba(var(--lg-brilho),.35);
+                  font:500 13px 'IBM Plex Mono',monospace;white-space:nowrap}
+#tela-login .pill .n{display:flex;align-items:center;justify-content:flex-end;min-width:13ch;padding:0 11px 0 13px;
+                     background:var(--amarelo);color:var(--azul-escuro);font-variant-numeric:tabular-nums}
+#tela-login .pill .k{display:flex;align-items:center;padding:0 12px 0 10px;background:#FBF5C4;color:#6b5a00;font-size:12px}
+
+/* Celular */
+@media(max-width:600px){
+  #tela-login .topo-login{padding:14px 16px 0}
+  #tela-login .tema-login{position:static;display:block;margin:0 0 6px auto}
+  #tela-login .logo-recorte{--largura:200px}
+  #tela-login .titulo-portal{font-size:18px}
+  #tela-login .lg{flex-direction:column;align-items:stretch;max-width:340px;margin:14px auto 0}
+  #tela-login .lg input{width:100%}
+}

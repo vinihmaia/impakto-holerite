@@ -1,0 +1,123 @@
+/* =========================================================
+   TELAS INTERNAS: funcionário, RH, holerite, importação
+   ========================================================= */
+.topo{background:var(--azul-escuro);color:#fff;display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;border-bottom:4px solid var(--amarelo);gap:12px;flex-wrap:wrap}
+.topo .marca{font-weight:800;font-style:italic;font-size:1.3rem;letter-spacing:1px}
+.topo .marca span{color:var(--amarelo);font-style:normal;font-weight:500;font-size:1rem}
+.topo .usuario{display:flex;align-items:center;gap:10px;font-size:.9rem;flex-wrap:wrap}
+.conteudo{max-width:1100px;margin:28px auto;padding:0 20px}
+.cartao{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(10,30,90,.06);margin-bottom:22px}
+.cartao h2{font-size:1.1rem;color:var(--azul-escuro);margin-bottom:16px}
+.linha{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.linha select{margin:0;max-width:280px}
+.fim{justify-content:flex-end;margin-top:8px}
+.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+.busca{max-width:320px;margin:0}
+.acoes{display:inline-flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.abas{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.aba{background:#dfe4f3;color:var(--azul);border:none;padding:10px 18px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.aba.ativa{background:var(--azul-escuro);color:var(--amarelo)}
+.senha-padrao-info{background:var(--cinza);border-radius:10px;padding:8px 13px;font-size:.88rem;margin-bottom:16px;line-height:1.5}
+.senha-padrao-info b{font-family:'IBM Plex Mono',monospace;color:var(--azul-escuro)}
+
+/* ---- Lançamento manual ---- */
+.duas-colunas{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:8px 0 20px}
+.duas-colunas h3{font-size:.9rem;margin-bottom:10px}
+.tit-prov{color:var(--verde)} .tit-desc{color:var(--vermelho)}
+.linha-item{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:6px}
+.linha-item input{margin:0;padding:9px 10px;font-size:.85rem}
+.barra-totais{background:var(--cinza);padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:.9rem}
+
+/* ---- Importação de PDF ---- */
+.drop{border:2px dashed #b9c2e0;border-radius:12px;padding:28px 20px;text-align:center;color:#5a6185;cursor:pointer;
+      margin-bottom:16px;transition:.15s;line-height:1.8}
+.drop:hover,.drop.ativo{border-color:var(--azul);background:#f3f6ff}
+.drop b{color:var(--azul-escuro)}
+.drop code{background:var(--cinza);padding:1px 6px;border-radius:4px;font-size:.8rem}
+.fila-item{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.6fr) 130px 90px auto;gap:8px;align-items:center;
+           padding:10px;border:1.5px solid #e3e8f7;border-radius:10px;margin-bottom:8px}
+.fila-item.falta{border-color:var(--amarelo-escuro);background:#fffdf0}
+.fila-item select,.fila-item input{margin:0;padding:8px 10px;font-size:.85rem}
+.fila-arq{min-width:0}
+.fila-arq b{display:block;font-size:.85rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fila-arq small{color:#7a809f;font-size:.75rem}
+
+/* ---- O holerite ---- */
+.holerite{border:1.5px solid var(--azul-escuro);border-radius:6px;overflow:hidden;background:#fff}
+.hol-cab{display:flex;justify-content:space-between;align-items:center;background:var(--azul-escuro);color:#fff;padding:14px 18px}
+.hol-marca{font-weight:800;font-style:italic;font-size:1.4rem;color:var(--amarelo)}
+.hol-cab small{opacity:.85}
+.hol-info{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px 18px;background:#f6f8fd;
+          border-bottom:1px solid #d5dbef;font-size:.85rem}
+.hol-info small{display:block;color:#6a7095;font-size:.68rem;text-transform:uppercase}
+.liquido{display:flex;justify-content:space-between;align-items:center;background:var(--amarelo);
+         color:var(--azul-escuro);padding:14px 18px;font-weight:600}
+.liquido b{font-size:1.3rem}
+.hol-rodape{padding:22px 18px 18px;font-size:.75rem;color:#5a6185}
+.assinatura{margin-top:14px;display:flex;gap:30px}
+.assinatura>div{flex:1;text-align:center}
+.assin-area{height:70px;display:flex;align-items:flex-end;justify-content:center;font-size:.9rem;color:var(--texto)}
+.assin-area img{max-height:70px;max-width:100%}
+.assin-linha{border-top:1px solid #9aa0bd;padding-top:4px}
+.selo{margin-top:14px;background:#e5f5ec;color:var(--verde);padding:8px 12px;border-radius:6px;font-weight:600}
+.pdf-barra{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;
+           background:#f6f8fd;border-bottom:1px solid #d5dbef;font-size:.85rem}
+.pdf-frame{display:block;width:100%;height:75vh;min-height:480px;border:none;background:#525659}
+
+/* ---- Celular ---- */
+@media(max-width:800px){
+  .duas-colunas{grid-template-columns:1fr}
+  .hol-info{grid-template-columns:repeat(2,1fr)}
+  .fila-item{grid-template-columns:1fr 1fr}
+  .fila-arq{grid-column:1/-1}
+}
+/* ---- Meu perfil ---- */
+.modal.perfil{max-width:620px}
+.perfil-topo{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.avatar{flex:none;width:58px;height:58px;border-radius:50%;background:var(--amarelo);color:var(--azul-escuro);
+        display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.25rem}
+.perfil-destaques{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.destaque{background:var(--superficie-2);border-radius:12px;padding:12px 14px}
+.destaque small,.perfil-item small{display:block;font-size:.7rem;color:var(--texto-4);text-transform:uppercase;letter-spacing:.03em}
+.destaque b{display:block;font-size:1.35rem;color:var(--titulo);margin:2px 0}
+.destaque span{font-size:.78rem;color:var(--texto-3)}
+.perfil-ferias{border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:.88rem;font-weight:500}
+.perfil-ferias.futuro{background:var(--destaque-bg);border:1px solid var(--borda);color:var(--texto-2)}
+.perfil-ferias.agora{background:var(--verde-bg);color:var(--verde)}
+.perfil-grade{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin-bottom:18px}
+.perfil-item{padding:9px 0;border-bottom:1px solid var(--borda-2)}
+.perfil-item b{font-weight:600;font-size:.92rem}
+@media(max-width:600px){
+  .perfil-destaques{grid-template-columns:1fr 1fr}
+  .perfil-grade{grid-template-columns:1fr}
+}
+/* ---- Topo: logo e menu "⋮" (celular) ---- */
+.topo .marca{display:flex;align-items:center;gap:10px}
+.topo-logo{height:38px;width:auto;display:block}
+.topo .marca .topo-logo-texto{color:#fff;font-style:italic;font-weight:800;font-size:1.3rem}
+.menu-topo{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.menu-nome{display:none}
+.btn-menu{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;
+          background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);font-size:1.4rem;line-height:1;cursor:pointer}
+.btn-menu:hover,.btn-menu[aria-expanded="true"]{border-color:var(--amarelo);color:var(--amarelo)}
+
+@media(max-width:700px){
+  .topo{padding:10px 16px;flex-wrap:nowrap}
+  .topo-logo{height:32px}
+  .topo .marca span.topo-sub{font-size:.85rem}
+  .topo .usuario{position:relative}
+  .topo .usuario .nome-usuario{display:none}
+  .btn-menu{display:inline-flex}
+  .menu-topo{display:none;position:absolute;right:0;top:calc(100% + 10px);z-index:40;flex-direction:column;
+             align-items:stretch;gap:2px;min-width:220px;padding:8px;background:var(--superficie);
+             border:1px solid var(--borda);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25)}
+  .menu-topo.aberto{display:flex}
+  .menu-nome{display:block;padding:8px 12px 10px;margin-bottom:4px;border-bottom:1px solid var(--borda-2);
+             font-weight:600;font-size:.9rem;color:var(--titulo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .menu-topo .btn{justify-content:flex-start;width:100%;padding:11px 12px;font-size:.9rem;
+                  background:transparent;color:var(--texto);border:none}
+  .menu-topo .btn:hover{background:var(--superficie-2)}
+  .menu-topo .btn-amarelo{background:var(--amarelo);color:var(--azul-escuro);justify-content:center;margin-top:6px}
+  .menu-topo .btn-amarelo:hover{background:var(--amarelo-escuro)}
+}
